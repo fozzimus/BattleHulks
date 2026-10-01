@@ -1,0 +1,12 @@
+# Material do jogo: nunca enviar ao GitHub
+privado/
+*.xlsx
+*.docx
+*.pdf
+
+# Configurações locais do Claude Code
+.claude/settings.local.json
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
