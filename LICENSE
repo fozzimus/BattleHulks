@@ -1,0 +1,45 @@
+MIT License
+
+Copyright (c) 2026 Felipe (fozzimus)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-------------------------------------------------------------------------------
+SCOPE OF THIS LICENSE / ALCANCE DESTA LICENÇA
+
+This MIT License applies ONLY to the original source code of this app
+(HTML, CSS, JavaScript, service worker, manifest and the gear icons).
+
+It does NOT apply to any Battle Hulks game content included in the app,
+such as unit names, unit statistics, weapons, rules or their Portuguese
+translations. Battle Hulks is a trademark of Fat Dragon Games, created by
+Tom Tullis. All rights to that content remain with its owners. It is used
+here with the creator's permission, for personal, non-commercial use, and
+may not be reused or redistributed under this license.
+
+Esta licença MIT vale SOMENTE para o código-fonte original do app
+(HTML, CSS, JavaScript, service worker, manifest e os ícones de engrenagem).
+
+Ela NÃO vale para o conteúdo do jogo Battle Hulks incluído no app, como
+nomes de unidades, estatísticas, armas, regras ou suas traduções para o
+português. Battle Hulks é uma marca da Fat Dragon Games, criada por
+Tom Tullis. Todos os direitos sobre esse conteúdo pertencem aos seus
+detentores. Ele é usado aqui com permissão do criador, para uso pessoal e
+sem fins comerciais, e não pode ser reutilizado ou redistribuído sob esta
+licença.

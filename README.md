@@ -8,20 +8,25 @@
 
 ### O que é
 
-App web pessoal para consultar as fichas de unidades do jogo de miniaturas **Battle Hulks** em português e montar listas de combate com soma automática de pontos. Funciona no celular e pode ser instalado na tela inicial, inclusive para uso offline.
+App web pessoal para consultar as fichas de unidades do jogo de miniaturas **Battle Hulks** em português e montar listas de combate com soma automática de pontos. Funciona no celular e pode ser instalado na tela inicial, inclusive para uso offline. Futuramente, deve incluir também referências rápidas de regras.
 
 Acesse em: https://fozzimus.github.io/BattleHulks/
 
-### Aviso importante
+### Permissão e uso
 
-- Este é um **projeto de fã, não oficial**, sem qualquer vínculo com a Fat Dragon Games.
-- Foi feito para **uso pessoal e do meu grupo de jogo**, **sem fins comerciais**. Não há venda, anúncios nem qualquer tipo de cobrança.
-- O app contém apenas dados resumidos das fichas de unidade (pontos e estatísticas), traduzidos para o português. Ele **não substitui** o manual de regras nem os arquivos oficiais do jogo.
-- Para jogar, adquira os arquivos oficiais diretamente com a Fat Dragon Games.
+- Este é um **projeto de fã, não oficial**, mantido de forma independente.
+- O conteúdo do jogo é usado **com permissão do criador, Tom Tullis** (obtida em outubro de 2026), para **uso pessoal e sem fins comerciais**.
+- Não há venda, anúncios nem qualquer tipo de cobrança, e o conteúdo não é distribuído para outros fins.
+- O app **não substitui** o manual de regras nem os arquivos oficiais do jogo. Para jogar, adquira os arquivos oficiais diretamente com a Fat Dragon Games.
+
+### Licença
+
+- **Código do app:** licença MIT. Veja o arquivo [LICENSE](LICENSE).
+- **Conteúdo do jogo** (nomes de unidades, estatísticas, armas, regras e suas traduções): **não** está coberto pela licença MIT. Todos os direitos pertencem à Fat Dragon Games, e esse conteúdo não pode ser reutilizado ou redistribuído.
 
 ### Créditos e direitos
 
-**Battle Hulks** é uma marca registrada da **Fat Dragon Games**. Jogo criado por **Tom Tullis**. Todos os direitos sobre o jogo, suas regras, nomes de unidades e materiais pertencem aos seus respectivos detentores.
+**Battle Hulks** é uma marca da **Fat Dragon Games**. Jogo criado por **Tom Tullis**.
 
 Site oficial: https://www.fatdragongames.com
 
@@ -33,20 +38,25 @@ Se você é detentor dos direitos e deseja alguma alteração ou a remoção des
 
 ### What this is
 
-A personal web app to look up **Battle Hulks** unit stats in Brazilian Portuguese and build force lists with automatic point totals. It runs on mobile and can be installed to the home screen, including for offline use.
+A personal web app to look up **Battle Hulks** unit stats in Brazilian Portuguese and build force lists with automatic point totals. It runs on mobile and can be installed to the home screen, including for offline use. Quick rules references are planned for the future.
 
 Live at: https://fozzimus.github.io/BattleHulks/
 
-### Important notice
+### Permission and use
 
-- This is an **unofficial fan project**, not affiliated with or endorsed by Fat Dragon Games.
-- It was made for **personal use and my own gaming group**, and is **non-commercial**. There are no sales, ads or charges of any kind.
-- The app only contains summarized unit card data (points and stats), translated into Portuguese. It is **not a replacement** for the rulebook or the official game files.
-- To play the game, please get the official files directly from Fat Dragon Games.
+- This is an **unofficial fan project**, maintained independently.
+- Game content is used **with permission from the game's creator, Tom Tullis** (granted in October 2026), for **personal, non-commercial use**.
+- There are no sales, ads or charges of any kind, and the content is not distributed for any other purpose.
+- The app is **not a replacement** for the rulebook or the official game files. To play the game, please get the official files directly from Fat Dragon Games.
+
+### License
+
+- **App source code:** MIT License. See [LICENSE](LICENSE).
+- **Game content** (unit names, stats, weapons, rules and their translations): **not** covered by the MIT License. All rights belong to Fat Dragon Games, and this content may not be reused or redistributed.
 
 ### Credits and rights
 
-**Battle Hulks** is a trademark of **Fat Dragon Games**. Game created by **Tom Tullis**. All rights to the game, its rules, unit names and materials belong to their respective owners.
+**Battle Hulks** is a trademark of **Fat Dragon Games**. Game created by **Tom Tullis**.
 
 Official website: https://www.fatdragongames.com
 
