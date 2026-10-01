@@ -46,10 +46,6 @@ Toda alteração em `index.html`, `manifest.json` ou nos ícones exige, no mesmo
 
 Alterações só no `README.md`, `LICENSE` ou `CLAUDE.md` NÃO mudam a versão.
 
-**Pendente:** o rodapé com a versão ainda não existe. Ele deve ser criado na próxima
-alteração do app, junto com um aviso curto de créditos (Battle Hulks © Fat Dragon Games,
-usado com permissão). A próxima versão é a v2.
-
 ## Permissão e licença
 
 - O código é MIT. O conteúdo do jogo (nomes, estatísticas, armas, regras e traduções)

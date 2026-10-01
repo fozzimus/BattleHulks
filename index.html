@@ -108,6 +108,8 @@ main{padding:14px 14px 40px; max-width:640px; margin:0 auto}
 .actions button{flex:1; padding:9px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-weight:600; cursor:pointer}
 .empty{color:var(--ink-dim); font-size:.85rem; text-align:center; padding:20px 0}
 textarea#exportArea{width:100%; min-height:140px; margin-top:10px; padding:10px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-family:monospace; font-size:.8rem; display:none}
+footer{max-width:100%;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--ink-dim);font-size:.75rem;line-height:1.5}
+footer .ver{font-weight:600}
 </style>
 </head>
 <body>
@@ -146,6 +148,10 @@ textarea#exportArea{width:100%; min-height:140px; margin-top:10px; padding:10px;
     </div>
   </section>
 </main>
+<footer>
+  <div>Battle Hulks &copy; Fat Dragon Games, usado com permiss&atilde;o. Projeto de f&atilde; n&atilde;o oficial.</div>
+  <div class="ver">v2 &middot; 01/10/2026</div>
+</footer>
 <script>
 const UNITS = [
 {n:"Storm Hulk Mk.I",tipo:"Hulk",classe:"Médio",pts:150,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:4,arm:8,str:8,special:null,ficha:"Hulk #01"},
