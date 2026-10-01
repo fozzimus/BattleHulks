@@ -20,26 +20,40 @@ unidades e manual de regras) é feito fora daqui, num projeto do claude.ai.
 - `manifest.json` — permite instalar o app no celular.
 - `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` — ícones de engrenagem.
 - `README.md` e `LICENSE` — avisos de uso, créditos e licença.
-- `privado/` — pasta local, ignorada pelo git, para planilha e manual. **Nunca** commitar.
+- `privado/` — pasta local, ignorada pelo git, para planilha, manual e JSON de dados. **Nunca** commitar.
 
-## Dados das unidades
+## Dados das unidades e lembretes de regras
 
-Ficam embutidos no `index.html`, nos arrays `UNITS` e `WEAPONS`.
+Ficam embutidos no `index.html`, nas constantes `UNITS`, `WEAPONS`, `RULES` e `CAMPOS`.
+Tudo vem pronto de um JSON (`privado/battlehulks-dados-v3.json`, o nome pode mudar a cada
+versão) gerado no chat do projeto no claude.ai a partir da planilha. A pasta `privado/`
+não vai para o git.
 
 - `UNITS`: `{n, tipo, classe, pts, def:[v,a,r], atk:[v,a,r], mov:[v,a,r], fuel, heat, arm, str, special, ficha}`.
   Os trios `[v,a,r]` seguem o estado da Estrutura: Verde / Amarelo / Vermelho.
-- `WEAPONS`: `{u, cat, n, en, tipo, range, dmg, obs}`, onde `u` é exatamente o `n` da unidade.
+  Na ficha, `atk` aparece como "Corpo a Corpo" (Ataque Corpo a Corpo).
+- `WEAPONS`: `{u, cat, n, en, tipo, range, dmg, obs, lembretes}`, onde `u` é exatamente o `n` da unidade.
+  `dmg` é mostrado como "Dados de Ataque" (categoria "Melhoria" mostra "Valor").
+  `lembretes` é a lista de IDs de `RULES` que viram chips tocáveis abaixo da arma.
+- `RULES`: `{id, bloco, termo, aliases, texto, ref, formato}`. `bloco` agrupa a aba Regras
+  (A a D, na ordem do JSON). `aliases` são sinônimos separados por `;`, usados na busca.
+  `formato`: `texto` (parágrafo), `etapas` (uma linha por item, separada por `\n`; "Rótulo:" no
+  começo da linha vira negrito) ou `tabela` (linhas "valor · efeito"). `ref` numérica aparece como
+  "Manual §X"; não numérica aparece como está; "—" não aparece.
+- `CAMPOS`: liga o campo da ficha ao ID do lembrete (`pts, classe, def, atk, mov, fuel, heat, arm, str`,
+  mais `cores` para a legenda Verde/Amarelo/Vermelho e `hovering` para a habilidade especial).
 
-Unidades novas normalmente chegam prontas do chat do claude.ai, já traduzidas.
-Ao inseri-las: confira se todos os campos existem, se `u` bate com o nome da unidade,
-mantenha a ordem das fichas (Hulk #01, #02... e depois Tank #01, #02...) e não altere
-a tradução sem perguntar ao Felipe.
+Para atualizar: substitua `UNITS`, `WEAPONS`, `RULES` e `CAMPOS` pelo conteúdo de `unidades`, `armas`,
+`regras` e `campos_da_ficha` do JSON novo. Não altere nomes, valores nem textos sem perguntar ao Felipe.
+Confira que `u` de cada arma bate com o nome de uma unidade, que a ordem das fichas se mantém
+(Hulk #01, #02... e depois Tank #01, #02...) e que todo ID usado em `lembretes` e `CAMPOS` existe em `RULES`.
+A lista de combate salva no aparelho usa o nome da unidade, então renomear uma unidade apaga essa linha da lista.
 
 ## REGRA OBRIGATÓRIA: versão a cada alteração do app
 
 Toda alteração em `index.html`, `manifest.json` ou nos ícones exige, no mesmo commit:
 
-1. Aumentar a versão do cache em `sw.js` (`battlehulks-v1` → `battlehulks-v2` → ...).
+1. Aumentar a versão do cache em `sw.js` (`battlehulks-v3` → `battlehulks-v4` → ...).
 2. Atualizar o rodapé do app no `index.html` com o mesmo número e a data:
    `vN · DD/MM/AAAA`. O número do rodapé e o do `sw.js` devem ser sempre iguais.
 3. Se um arquivo novo precisar funcionar offline, incluí-lo na lista `FILES` do `sw.js`.

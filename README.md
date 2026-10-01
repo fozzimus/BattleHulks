@@ -28,6 +28,8 @@ Acesse em: https://fozzimus.github.io/BattleHulks/
 
 **Battle Hulks** é uma marca da **Fat Dragon Games**. Jogo criado por **Tom Tullis**.
 
+App e tradução: Felipe (fozzimus), com apoio do Claude (Anthropic).
+
 Site oficial: https://www.fatdragongames.com
 
 Se você é detentor dos direitos e deseja alguma alteração ou a remoção deste conteúdo, abra uma *issue* neste repositório e o pedido será atendido.
@@ -57,6 +59,8 @@ Live at: https://fozzimus.github.io/BattleHulks/
 ### Credits and rights
 
 **Battle Hulks** is a trademark of **Fat Dragon Games**. Game created by **Tom Tullis**.
+
+App and translation: Felipe (fozzimus), with support from Claude (Anthropic).
 
 Official website: https://www.fatdragongames.com
 
