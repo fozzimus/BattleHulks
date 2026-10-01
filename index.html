@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Battle Hulks PT-BR</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1f4e79">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="B. Hulks">
+<style>
+:root{
+  --bg:#f4f1ea; --panel:#fffdf8; --ink:#2a231c; --ink-dim:#6b6154;
+  --accent:#1f4e79; --accent-ink:#fff; --line:#e0d8c8;
+  --green:#2f7a3d; --yellow:#b3860b; --red:#b03a2e;
+  --chip:#eee5d3;
+  box-sizing:border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1c1814; --panel:#26211b; --ink:#f0e9db; --ink-dim:#a89b85;
+    --accent:#8cbbe8; --accent-ink:#0f1e2c; --line:#3a332a; --chip:#332c22;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1c1814; --panel:#26211b; --ink:#f0e9db; --ink-dim:#a89b85;
+  --accent:#8cbbe8; --accent-ink:#0f1e2c; --line:#3a332a; --chip:#332c22;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top: env(safe-area-inset-top, 0px);}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Segoe UI',Roboto,-apple-system,Arial,sans-serif;
+  min-height:100%;
+}
+header{
+  position:sticky; top:0; z-index:5;
+  padding-top: calc(12px + env(safe-area-inset-top,0px));
+  background:var(--accent); color:var(--accent-ink);
+  padding-left:16px; padding-right:16px; padding-bottom:10px;
+}
+header h1{margin:0 0 8px 0; font-size:1.15rem; letter-spacing:.5px}
+nav{display:flex; gap:8px}
+nav button{
+  flex:1; padding:9px 6px; border:none; border-radius:8px; cursor:pointer;
+  background:rgba(255,255,255,.18); color:var(--accent-ink); font-weight:600; font-size:.85rem;
+}
+nav button.active{background:var(--panel); color:var(--accent)}
+main{padding:14px 14px 40px; max-width:640px; margin:0 auto}
+.search{
+  width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--line);
+  background:var(--panel); color:var(--ink); font-size:.95rem; margin-bottom:12px;
+}
+.card{
+  background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  padding:12px 14px; margin-bottom:10px;
+}
+.card summary{cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:8px}
+.card summary::-webkit-details-marker{display:none}
+.u-name{font-weight:700; font-size:1rem}
+.u-sub{color:var(--ink-dim); font-size:.78rem}
+.u-pts{background:var(--chip); border-radius:6px; padding:3px 8px; font-weight:700; font-size:.85rem; white-space:nowrap}
+.stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:10px}
+.stat{background:var(--chip); border-radius:8px; padding:6px 4px; text-align:center}
+.stat .lbl{font-size:.68rem; color:var(--ink-dim); text-transform:uppercase}
+.stat .vals{font-size:.9rem; font-weight:700; margin-top:2px}
+.stat .vals span:nth-child(1){color:var(--green)}
+.stat .vals span:nth-child(2){color:var(--yellow)}
+.stat .vals span:nth-child(3){color:var(--red)}
+.stat .vals span::after{content:" / "; color:var(--ink-dim); font-weight:400}
+.stat .vals span:last-child::after{content:""}
+.misc{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; font-size:.78rem; color:var(--ink-dim)}
+.misc span{background:var(--chip); border-radius:6px; padding:3px 7px}
+.special{margin-top:8px; font-size:.82rem; font-style:italic; color:var(--ink-dim)}
+.wlist{margin-top:10px; border-top:1px dashed var(--line); padding-top:8px}
+.witem{padding:6px 0; border-bottom:1px solid var(--line); font-size:.85rem}
+.witem:last-child{border-bottom:none}
+.witem .wname{font-weight:600}
+.witem .wmeta{color:var(--ink-dim); font-size:.75rem; margin-top:2px}
+.legend{font-size:.75rem; color:var(--ink-dim); margin:-4px 0 14px}
+
+/* Lista de combate */
+.limit-row{display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap}
+.limit-row label{font-size:.85rem; color:var(--ink-dim)}
+.limit-row input[type=number]{width:90px; padding:7px 8px; border-radius:6px; border:1px solid var(--line); background:var(--panel); color:var(--ink)}
+.addrow{display:flex; gap:8px; margin-bottom:14px}
+.addrow select{flex:1; padding:9px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink)}
+.addrow input[type=number]{width:64px; padding:9px 4px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); text-align:center}
+.addrow button{padding:9px 14px; border:none; border-radius:8px; background:var(--accent); color:var(--accent-ink); font-weight:700; cursor:pointer}
+.lline{display:flex; justify-content:space-between; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin-bottom:8px}
+.lline .lname{font-weight:600; font-size:.92rem}
+.lline .lsub{color:var(--ink-dim); font-size:.75rem}
+.lline .lqty{font-size:.85rem; color:var(--ink-dim); margin:0 10px}
+.lline .lpts{font-weight:700; margin-right:10px}
+.lline button{background:none; border:none; color:var(--red); font-size:1.1rem; cursor:pointer; padding:2px 6px}
+.summary{position:sticky; bottom:0; background:var(--panel); border-top:1px solid var(--line);
+  padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px));
+  margin:16px -14px -40px; display:flex; justify-content:space-between; align-items:center; font-size:.95rem}
+.summary .over{color:var(--red); font-weight:700}
+.summary .ok{color:var(--green); font-weight:700}
+.actions{display:flex; gap:8px; margin-top:12px}
+.actions button{flex:1; padding:9px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-weight:600; cursor:pointer}
+.empty{color:var(--ink-dim); font-size:.85rem; text-align:center; padding:20px 0}
+textarea#exportArea{width:100%; min-height:140px; margin-top:10px; padding:10px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-family:monospace; font-size:.8rem; display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚙️ Battle Hulks PT-BR</h1>
+  <nav>
+    <button id="tabFichas" class="active">Fichas</button>
+    <button id="tabLista">Lista de Combate</button>
+  </nav>
+</header>
+<main>
+  <section id="viewFichas">
+    <input class="search" id="searchBox" placeholder="Buscar unidade (nome, tipo, classe)...">
+    <div class="legend">K = Ataque Cinético · E = Ataque de Energia · valores em Verde/Amarelo/Vermelho seguem o estado da Estrutura</div>
+    <div id="unitList"></div>
+  </section>
+  <section id="viewLista" style="display:none">
+    <div class="limit-row">
+      <label for="limitInput">Limite de pontos:</label>
+      <input type="number" id="limitInput" value="500" min="0">
+    </div>
+    <div class="addrow">
+      <select id="unitSelect"></select>
+      <input type="number" id="qtyInput" value="1" min="1">
+      <button id="addBtn">+</button>
+    </div>
+    <div id="forceList"></div>
+    <div class="actions">
+      <button id="exportBtn">Exportar como texto</button>
+      <button id="clearBtn">Limpar lista</button>
+    </div>
+    <textarea id="exportArea" readonly></textarea>
+    <div class="summary">
+      <span>Total: <strong id="totalPts">0</strong> pts</span>
+      <span id="remainSpan">Restam 500 pts</span>
+    </div>
+  </section>
+</main>
+<script>
+const UNITS = [
+{n:"Storm Hulk Mk.I",tipo:"Hulk",classe:"Médio",pts:150,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:4,arm:8,str:8,special:null,ficha:"Hulk #01"},
+{n:"Dusk Reaper Mk.I",tipo:"Hulk",classe:"Médio",pts:160,def:[3,2,1],atk:[4,3,2],mov:[7,6,5],fuel:10,heat:3,arm:6,str:7,special:null,ficha:"Hulk #02"},
+{n:"Void Knight Mk.I",tipo:"Hulk",classe:"Médio",pts:135,def:[4,3,2],atk:[3,3,2],mov:[8,7,6],fuel:10,heat:3,arm:6,str:5,special:null,ficha:"Hulk #03"},
+{n:"Steel Crusader Mk.I",tipo:"Hulk",classe:"Médio",pts:155,def:[3,2,1],atk:[5,4,3],mov:[7,6,5],fuel:9,heat:4,arm:6,str:6,special:null,ficha:"Hulk #04"},
+{n:"Iron Guardian Mk.I",tipo:"Hulk",classe:"Médio",pts:125,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:3,arm:7,str:8,special:null,ficha:"Hulk #05"},
+{n:"Doom Reaper Mk.I",tipo:"Hulk",classe:"Médio",pts:120,def:[4,3,2],atk:[3,3,2],mov:[8,7,6],fuel:7,heat:3,arm:6,str:5,special:null,ficha:"Hulk #06"},
+{n:"Thunder Crusader Mk.I",tipo:"Hulk",classe:"Pesado",pts:195,def:[2,2,1],atk:[5,4,3],mov:[5,4,3],fuel:11,heat:5,arm:10,str:10,special:null,ficha:"Hulk #07"},
+{n:"Storm Guardian Mk.I",tipo:"Hulk",classe:"Pesado",pts:215,def:[2,2,1],atk:[5,4,3],mov:[5,4,3],fuel:10,heat:5,arm:10,str:10,special:null,ficha:"Hulk #08"},
+{n:"Specter Mk.I",tipo:"Tanque",classe:"Leve",pts:65,def:[4,3,3],atk:[2,2,1],mov:[8,7,6],fuel:0,heat:2,arm:4,str:4,special:"Hovering: esta unidade ignora terreno difícil.",ficha:"Tank #01"},
+{n:"Chimera Mk.I",tipo:"Tanque",classe:"Leve",pts:70,def:[4,3,3],atk:[2,2,1],mov:[8,7,6],fuel:0,heat:2,arm:4,str:4,special:"Hovering: esta unidade ignora terreno difícil.",ficha:"Tank #02"},
+];
+const WEAPONS = [
+{u:"Storm Hulk Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'12"',dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)"},
+{u:"Storm Hulk Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'12"',dmg:"3 / 3 / 2",obs:"Munição Explosiva"},
+{u:"Storm Hulk Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dano Solo/Ar por coluna; ver Seção 7.1 do manual"},
+{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'15"',dmg:"3 / 3 / 2",obs:null},
+{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'15"',dmg:"3 / 3 / 2",obs:null},
+{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dano Solo/Ar por coluna; ver Seção 7.1 do manual"},
+{u:"Void Knight Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes"},
+{u:"Void Knight Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes"},
+{u:"Void Knight Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'14"',dmg:"3 / 3 / 2",obs:null},
+{u:"Void Knight Mk.I",cat:"Melhoria",n:"Blindagem Ablativa",en:"Ablative Armor",tipo:"Energia",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques de energia (Seção 8.1)"},
+{u:"Steel Crusader Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'13"',dmg:"3 / 3 / 2",obs:null},
+{u:"Steel Crusader Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'13"',dmg:"3 / 3 / 2",obs:null},
+{u:"Steel Crusader Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dano Solo/Ar por coluna; ver Seção 7.1 do manual"},
+{u:"Steel Crusader Mk.I",cat:"Melhoria",n:"Blindagem Reativa",en:"Reactive Armor",tipo:"Cinético",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques cinéticos à distância (Seção 8.2)"},
+{u:"Iron Guardian Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes"},
+{u:"Iron Guardian Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'14"',dmg:"3 / 2 / 1",obs:null},
+{u:"Doom Reaper Mk.I",cat:"Arma",n:"Míssil",en:"Missiles",tipo:"Cinético",range:'08-22"',dmg:"3 / 3 / 3",obs:"4 Mísseis"},
+{u:"Doom Reaper Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'12"',dmg:"3 / 2 / 1",obs:"Munição Perfurante (Armor Piercing)"},
+{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'16"',dmg:"4 / 3 / 3",obs:"Munição Perfurante (Armor Piercing)"},
+{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'16"',dmg:"4 / 3 / 3",obs:"Munição Explosiva"},
+{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Míssil",en:"Missiles",tipo:"Cinético",range:'08-24"',dmg:"3 / 3 / 3",obs:"4 Mísseis"},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'16"',dmg:"4 / 4 / 3",obs:null},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'16"',dmg:"4 / 4 / 3",obs:null},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'14"',dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)"},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'14"',dmg:"3 / 3 / 2",obs:"Munição Explosiva"},
+{u:"Specter Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Guns",tipo:"Energia",range:'11"',dmg:"2 / 2 / 1",obs:null},
+{u:"Chimera Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes. *Podem ser recarregadas na área de implantação; leva 1 turno completo."},
+];
+
+function weaponsFor(name){ return WEAPONS.filter(w=>w.u===name); }
+
+function renderUnits(filter){
+  const list = document.getElementById('unitList');
+  const f = (filter||"").toLowerCase().trim();
+  list.innerHTML = "";
+  UNITS.filter(u => !f || (u.n+u.tipo+u.classe).toLowerCase().includes(f)).forEach(u=>{
+    const det = document.createElement('details');
+    det.className = 'card';
+    const ws = weaponsFor(u.n);
+    det.innerHTML = `
+      <summary>
+        <div><div class="u-name">${u.n}</div><div class="u-sub">${u.tipo} · ${u.classe} · ${u.ficha}</div></div>
+        <div class="u-pts">${u.pts} pts</div>
+      </summary>
+      <div class="stat-grid">
+        <div class="stat"><div class="lbl">Defesa</div><div class="vals"><span>${u.def[0]}</span><span>${u.def[1]}</span><span>${u.def[2]}</span></div></div>
+        <div class="stat"><div class="lbl">Ataque</div><div class="vals"><span>${u.atk[0]}</span><span>${u.atk[1]}</span><span>${u.atk[2]}</span></div></div>
+        <div class="stat"><div class="lbl">Movimento</div><div class="vals"><span>${u.mov[0]}</span><span>${u.mov[1]}</span><span>${u.mov[2]}</span></div></div>
+      </div>
+      <div class="misc">
+        <span>Combustível: ${u.fuel}</span>
+        <span>Calor Máx.: ${u.heat}</span>
+        <span>Blindagem Máx.: ${u.arm}</span>
+        <span>Estrutura Máx.: ${u.str}</span>
+      </div>
+      ${u.special ? `<div class="special">${u.special}</div>` : ""}
+      <div class="wlist">
+        ${ws.map(w=>`<div class="witem"><div class="wname">${w.n} <span style="color:var(--ink-dim); font-weight:400">(${w.en})</span></div>
+          <div class="wmeta">${w.cat} · ${w.tipo} · Alcance ${w.range} · Dano ${w.dmg}${w.obs ? " · "+w.obs : ""}</div></div>`).join("")}
+      </div>`;
+    list.appendChild(det);
+  });
+}
+
+// ---- Lista de Combate ----
+const STORE_KEY = 'battlehulks_forcelist_v1';
+const LIMIT_KEY = 'battlehulks_limit_v1';
+let force = []; // {name, qty}
+let limit = 500;
+
+function loadState(){
+  try{
+    const raw = window.localStorage.getItem(STORE_KEY);
+    force = raw ? JSON.parse(raw) : [];
+    const lim = window.localStorage.getItem(LIMIT_KEY);
+    limit = lim ? parseInt(lim,10) : 500;
+  }catch(e){ force = []; limit = 500; }
+}
+function saveState(){
+  try{
+    window.localStorage.setItem(STORE_KEY, JSON.stringify(force));
+    window.localStorage.setItem(LIMIT_KEY, String(limit));
+  }catch(e){}
+}
+
+function unitByName(n){ return UNITS.find(u=>u.n===n); }
+
+function renderForceList(){
+  const wrap = document.getElementById('forceList');
+  wrap.innerHTML = "";
+  if(force.length === 0){
+    wrap.innerHTML = '<div class="empty">Nenhuma unidade na lista ainda. Escolha acima e clique em "+".</div>';
+  }
+  let total = 0;
+  force.forEach((line, idx)=>{
+    const u = unitByName(line.name);
+    if(!u) return;
+    const sub = u.pts * line.qty;
+    total += sub;
+    const row = document.createElement('div');
+    row.className = 'lline';
+    row.innerHTML = `
+      <div><div class="lname">${u.n}</div><div class="lsub">${u.tipo} · ${u.classe} · ${u.pts} pts/unid.</div></div>
+      <div style="display:flex;align-items:center">
+        <span class="lqty">x${line.qty}</span>
+        <span class="lpts">${sub} pts</span>
+        <button data-idx="${idx}" class="rmBtn" aria-label="Remover">✕</button>
+      </div>`;
+    wrap.appendChild(row);
+  });
+  document.getElementById('totalPts').textContent = total;
+  const remain = limit - total;
+  const remainSpan = document.getElementById('remainSpan');
+  remainSpan.textContent = remain >= 0 ? `Restam ${remain} pts` : `Excedeu em ${-remain} pts`;
+  remainSpan.className = remain >= 0 ? 'ok' : 'over';
+  wrap.querySelectorAll('.rmBtn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      force.splice(parseInt(b.dataset.idx,10),1);
+      saveState(); renderForceList();
+    });
+  });
+}
+
+function populateUnitSelect(){
+  const sel = document.getElementById('unitSelect');
+  sel.innerHTML = UNITS.map(u=>`<option value="${u.n}">${u.n} (${u.pts} pts)</option>`).join("");
+}
+
+function exportText(){
+  const u_lines = force.map(line=>{
+    const u = unitByName(line.name);
+    return `${line.qty}x ${u.n} — ${u.pts*line.qty} pts`;
+  });
+  const total = force.reduce((s,l)=> s + unitByName(l.name).pts * l.qty, 0);
+  const txt = `BATTLE HULKS — Lista de Combate\nLimite: ${limit} pts | Total: ${total} pts | Restam: ${limit-total} pts\n\n` + u_lines.join("\n");
+  const area = document.getElementById('exportArea');
+  area.style.display = 'block';
+  area.value = txt;
+  area.focus(); area.select();
+  try{ document.execCommand('copy'); }catch(e){}
+}
+
+// ---- Tabs ----
+function showTab(tab){
+  document.getElementById('viewFichas').style.display = tab==='fichas' ? '' : 'none';
+  document.getElementById('viewLista').style.display = tab==='lista' ? '' : 'none';
+  document.getElementById('tabFichas').classList.toggle('active', tab==='fichas');
+  document.getElementById('tabLista').classList.toggle('active', tab==='lista');
+}
+
+document.getElementById('tabFichas').addEventListener('click', ()=>showTab('fichas'));
+document.getElementById('tabLista').addEventListener('click', ()=>showTab('lista'));
+document.getElementById('searchBox').addEventListener('input', e=>renderUnits(e.target.value));
+document.getElementById('addBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('unitSelect').value;
+  const qty = Math.max(1, parseInt(document.getElementById('qtyInput').value,10) || 1);
+  const existing = force.find(l=>l.name===name);
+  if(existing){ existing.qty += qty; } else { force.push({name, qty}); }
+  saveState(); renderForceList();
+});
+document.getElementById('limitInput').addEventListener('change', e=>{
+  limit = Math.max(0, parseInt(e.target.value,10) || 0);
+  saveState(); renderForceList();
+});
+document.getElementById('exportBtn').addEventListener('click', exportText);
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+  if(force.length===0) return;
+  force = []; saveState(); renderForceList();
+  document.getElementById('exportArea').style.display = 'none';
+});
+
+loadState();
+document.getElementById('limitInput').value = limit;
+renderUnits('');
+populateUnitSelect();
+renderForceList();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('SW falhou:', err));
+  });
+}
+</script>
+</body>
+</html>
