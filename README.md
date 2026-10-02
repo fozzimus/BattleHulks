@@ -1,4 +1,6 @@
-# Battle Hulks PT-BR — App de consulta (projeto de fã)
+# C3 Hulks — Battle Hulks PT-BR
+
+App de consulta e acompanhamento de partidas (projeto de fã) · Reference and battle-tracker app (fan project)
 
 🇧🇷 [Português](#português) · 🇺🇸 [English](#english)
 
@@ -10,7 +12,7 @@
 
 App web pessoal para consultar as fichas de unidades do jogo de miniaturas **Battle Hulks** em português e montar listas de combate com soma automática de pontos. Funciona no celular e pode ser instalado na tela inicial, inclusive para uso offline. Futuramente, deve incluir também referências rápidas de regras.
 
-Acesse em: https://fozzimus.github.io/BattleHulks/
+Acesse em: https://fozzimus.github.io/c3-hulks/
 
 ### Permissão e uso
 
@@ -42,7 +44,7 @@ Se você é detentor dos direitos e deseja alguma alteração ou a remoção des
 
 A personal web app to look up **Battle Hulks** unit stats in Brazilian Portuguese and build force lists with automatic point totals. It runs on mobile and can be installed to the home screen, including for offline use. Quick rules references are planned for the future.
 
-Live at: https://fozzimus.github.io/BattleHulks/
+Live at: https://fozzimus.github.io/c3-hulks/
 
 ### Permission and use
 

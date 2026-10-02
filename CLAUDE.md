@@ -1,4 +1,4 @@
-# Battle Hulks PT-BR — instruções para o Claude Code
+# C3 Hulks (Battle Hulks PT-BR) — instruções para o Claude Code
 
 Responda sempre em português do Brasil. O dono do projeto é o Felipe (GitHub: fozzimus).
 Seja honesto sobre limitações técnicas: avise quando algo não puder ser feito, sugira
@@ -6,9 +6,11 @@ alternativas e deixe o Felipe escolher o caminho.
 
 ## O que é este projeto
 
-App web (PWA) para consultar as fichas de unidades do jogo Battle Hulks em português
-e montar listas de combate com soma de pontos. Publicado no GitHub Pages:
-https://fozzimus.github.io/BattleHulks/
+O projeto se chama **C3 Hulks**; "Battle Hulks · PT-BR" aparece como subtítulo para deixar claro
+de que jogo se trata. App web (PWA) para consultar as fichas de unidades do jogo Battle Hulks em
+português, montar listas de combate com soma de pontos, acompanhar o dano numa partida, compartilhar
+a lista e imprimir as fichas. Repositório `fozzimus/c3-hulks`, publicado no GitHub Pages:
+https://fozzimus.github.io/c3-hulks/
 
 Este repositório é a **fonte oficial** do app. O trabalho de tradução (planilha de
 unidades e manual de regras) é feito fora daqui, num projeto do claude.ai.
@@ -25,16 +27,23 @@ unidades e manual de regras) é feito fora daqui, num projeto do claude.ai.
 ## Dados das unidades e lembretes de regras
 
 Ficam embutidos no `index.html`, nas constantes `UNITS`, `WEAPONS`, `RULES` e `CAMPOS`.
-Tudo vem pronto de um JSON (`privado/battlehulks-dados-v3.json`, o nome pode mudar a cada
+Tudo vem pronto de um JSON (`privado/battlehulks-dados-v4.json`, o nome pode mudar a cada
 versão) gerado no chat do projeto no claude.ai a partir da planilha. A pasta `privado/`
 não vai para o git.
 
-- `UNITS`: `{n, tipo, classe, pts, def:[v,a,r], atk:[v,a,r], mov:[v,a,r], fuel, heat, arm, str, special, ficha}`.
-  Os trios `[v,a,r]` seguem o estado da Estrutura: Verde / Amarelo / Vermelho.
+- `UNITS`: `{n, tipo, classe, pts, def:[v,a,r], atk:[v,a,r], mov:[v,a,r], fuel, heat, arm, str, special, ficha,
+  str_amarelo, str_verde}`. Os trios `[v,a,r]` seguem o estado da Estrutura: Verde / Amarelo / Vermelho.
   Na ficha, `atk` aparece como "Corpo a Corpo" (Ataque Corpo a Corpo).
-- `WEAPONS`: `{u, cat, n, en, tipo, range, dmg, obs, lembretes}`, onde `u` é exatamente o `n` da unidade.
+  - Cor da Estrutura com `s` pontos restantes: Verde se `s >= str_verde`; Amarelo se `s >= str_amarelo`;
+    senão Vermelho (função `strColor`). Os limites variam por unidade (Thunder Crusader e Storm Guardian
+    têm Estrutura 10, mas trocam de cor em pontos diferentes). **Nunca calcule a cor por proporção.**
+  - Os limites vêm da planilha (aba Unidades, colunas "Estrutura: Amarelo a partir de" e
+    "Estrutura: Verde a partir de") e **precisam ser preenchidos a cada unidade nova**.
+- `WEAPONS`: `{u, cat, n, en, tipo, range, dmg, obs, lembretes, usos, pontos}`, onde `u` é exatamente o `n` da unidade.
   `dmg` é mostrado como "Dados de Ataque" (categoria "Melhoria" mostra "Valor").
   `lembretes` é a lista de IDs de `RULES` que viram chips tocáveis abaixo da arma.
+  `usos` (número ou `null`): Foguetes = total de foguetes; Mísseis e AHM = total de ataques na partida.
+  `pontos` só existe nas Melhorias (blindagens que já vêm na carta, valor 2); não é usado na aba Batalha.
 - `RULES`: `{id, bloco, termo, aliases, texto, ref, formato}`. `bloco` agrupa a aba Regras
   (A a D, na ordem do JSON). `aliases` são sinônimos separados por `;`, usados na busca.
   `formato`: `texto` (parágrafo), `etapas` (uma linha por item, separada por `\n`; "Rótulo:" no
@@ -44,10 +53,54 @@ não vai para o git.
   mais `cores` para a legenda Verde/Amarelo/Vermelho e `hovering` para a habilidade especial).
 
 Para atualizar: substitua `UNITS`, `WEAPONS`, `RULES` e `CAMPOS` pelo conteúdo de `unidades`, `armas`,
-`regras` e `campos_da_ficha` do JSON novo. Não altere nomes, valores nem textos sem perguntar ao Felipe.
+`regras` e `campos_da_ficha` do JSON novo (um objeto por linha, como já está no arquivo). Não altere nomes, valores nem textos sem perguntar ao Felipe.
 Confira que `u` de cada arma bate com o nome de uma unidade, que a ordem das fichas se mantém
 (Hulk #01, #02... e depois Tank #01, #02...) e que todo ID usado em `lembretes` e `CAMPOS` existe em `RULES`.
-A lista de combate salva no aparelho usa o nome da unidade, então renomear uma unidade apaga essa linha da lista.
+A lista de combate salva no aparelho usa o nome da unidade, então renomear uma unidade apaga essa linha da lista
+(e o dano dela na aba Batalha).
+
+## Abas do app
+
+Ordem: Fichas · Lista · Batalha · Regras.
+
+### Batalha (rastreador de partida)
+
+- **Instâncias:** uma por cópia da Lista de Combate atual. "2x Chimera Mk.I" vira "Chimera Mk.I #1" e "#2";
+  quantidade 1 não leva número. A chave interna é `Nome#n` (sempre com número).
+  Quando a lista muda (`syncBattle`), as instâncias que continuam mantêm o estado, as novas começam
+  zeradas e as removidas são descartadas.
+- **Estado salvo** no `localStorage`, chave `battlehulks_batalha_v1`, com try/catch:
+  `{ "Nome#n": { arm, str, usos: { índiceDaArma: restante } } }`. O índice é a posição da arma em
+  `weaponsFor(nome)`; a contagem é por arma, não por tipo (o Void Knight tem dois lançadores de foguetes).
+- **Tela de lista:** um card por instância com Blindagem, Estrutura e a cor atual. Estrutura 0 = card
+  acinzentado com "Destruída", ainda tocável. "Nova Batalha" pede confirmação e zera dano e usos de
+  todas as instâncias, sem mexer na Lista.
+- **Tela de detalhe:** abre com `history.pushState`, para o Voltar do Android voltar à lista (`popstate`).
+  Defesa, Corpo a Corpo, Movimento e os Dados de Ataque das armas mostram os três valores com o da cor
+  atual em destaque. Se `dmg` não tiver três partes separadas por " / " (AHM, Melhorias), aparece como está.
+- **Trilhas** de 0 até o máximo, imitando a carta. **O número tocado é o valor que sobrou:** as células acima
+  ficam riscadas (X) e a do valor atual fica destacada; tocar num número mais alto desfaz.
+  Botões −1/+1 ao lado. Até 7 células numa linha; trilhas maiores quebram em duas linhas (alvo ≥ 40px).
+  O app não passa dano de uma trilha para a outra: cada trilha é marcada à mão.
+- **Blindagens especiais (Ablativa, Reativa) NÃO são rastreadas**, nem as que vêm na carta nem as compradas:
+  ficam com tokens físicos na mesa, visíveis para o oponente. No detalhe, aparecem só como informação
+  (nome e valor, tocável para o lembrete). Decisão do Felipe; não acrescentar trilha sem perguntar.
+- **Usos por partida:** contador "Usos: x/máx" com − e + em cada arma que tem `usos`.
+
+### Compartilhar e imprimir
+
+- **Compartilhar** (aba Lista): `navigator.share({title, text})` com o mesmo texto de "Exportar como texto";
+  sem `navigator.share`, copia para a área de transferência e mostra "Lista copiada". Só a lista, sem dano.
+- **Imprimir / Salvar como PDF:** `window.print()` com `@media print`, sem bibliotecas. "Imprimir ficha"
+  em cada ficha e "Imprimir fichas da lista" (uma ficha por instância) na aba Lista. O conteúdo vai para
+  `#printArea` e a classe `printing` no `body` esconde o resto só na impressão; ela sai no próximo toque.
+  O impresso é sempre claro e traz cabeçalho "C3 Hulks · Battle Hulks PT-BR", trilhas em branco com as
+  cores da Estrutura, quadradinhos de usos e a linha de créditos.
+
+### Chaves do localStorage
+
+`battlehulks_forcelist_v1` (lista), `battlehulks_limit_v1` (limite de pontos) e `battlehulks_batalha_v1`
+(batalha). **Não renomeie**: isso apagaria as listas e o dano salvos nos aparelhos.
 
 ## REGRA OBRIGATÓRIA: versão a cada alteração do app
 

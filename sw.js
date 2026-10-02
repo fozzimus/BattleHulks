@@ -1,6 +1,6 @@
-// Battle Hulks PT-BR - service worker
+// C3 Hulks (Battle Hulks PT-BR) - service worker
 // Ao publicar uma versão nova do app, aumente o número abaixo.
-const CACHE = 'battlehulks-v3';
+const CACHE = 'battlehulks-v4';
 const FILES = ['./', './index.html', './manifest.json',
   './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 

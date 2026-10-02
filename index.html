@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Battle Hulks PT-BR</title>
+<title>C3 Hulks · Battle Hulks PT-BR</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -11,13 +11,13 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="B. Hulks">
+<meta name="apple-mobile-web-app-title" content="C3 Hulks">
 <style>
 :root{
   --bg:#f4f1ea; --panel:#fffdf8; --ink:#2a231c; --ink-dim:#6b6154;
   --accent:#1f4e79; --accent-ink:#fff; --line:#e0d8c8;
   --green:#2f7a3d; --yellow:#b3860b; --red:#b03a2e;
-  --chip:#eee5d3;
+  --chip:#eee5d3; --armcell:#ffffff;
   box-sizing:border-box;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -25,12 +25,12 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#1c1814; --panel:#26211b; --ink:#f0e9db; --ink-dim:#a89b85;
-    --accent:#8cbbe8; --accent-ink:#0f1e2c; --line:#3a332a; --chip:#332c22;
+    --accent:#8cbbe8; --accent-ink:#0f1e2c; --line:#3a332a; --chip:#332c22; --armcell:#4a4237;
   }
 }
 :root[data-theme="dark"]{
   --bg:#1c1814; --panel:#26211b; --ink:#f0e9db; --ink-dim:#a89b85;
-  --accent:#8cbbe8; --accent-ink:#0f1e2c; --line:#3a332a; --chip:#332c22;
+  --accent:#8cbbe8; --accent-ink:#0f1e2c; --line:#3a332a; --chip:#332c22; --armcell:#4a4237;
 }
 *{box-sizing:border-box}
 html{scroll-padding-top: env(safe-area-inset-top, 0px);}
@@ -45,10 +45,13 @@ header{
   background:var(--accent); color:var(--accent-ink);
   padding-left:16px; padding-right:16px; padding-bottom:10px;
 }
-header h1{margin:0 0 8px 0; font-size:1.15rem; letter-spacing:.5px}
-nav{display:flex; gap:8px}
+.brand{display:flex; align-items:center; gap:10px; margin-bottom:9px}
+.brand .gear{font-size:1.6rem; line-height:1}
+header h1{margin:0; font-size:1.2rem; line-height:1.15; letter-spacing:.5px}
+.brand-sub{font-size:.72rem; opacity:.85; letter-spacing:.3px}
+nav{display:flex; gap:6px}
 nav button{
-  flex:1; padding:9px 6px; border:none; border-radius:8px; cursor:pointer;
+  flex:1; min-width:0; min-height:40px; padding:9px 4px; border:none; border-radius:8px; cursor:pointer;
   background:rgba(255,255,255,.18); color:var(--accent-ink); font-weight:600; font-size:.85rem;
 }
 nav button.active{background:var(--panel); color:var(--accent)}
@@ -104,8 +107,8 @@ main{padding:14px 14px 40px; max-width:640px; margin:0 auto}
   margin:16px -14px -40px; display:flex; justify-content:space-between; align-items:center; font-size:.95rem}
 .summary .over{color:var(--red); font-weight:700}
 .summary .ok{color:var(--green); font-weight:700}
-.actions{display:flex; gap:8px; margin-top:12px}
-.actions button{flex:1; padding:9px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-weight:600; cursor:pointer}
+.actions{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px}
+.actions button{min-height:44px; padding:9px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-weight:600; cursor:pointer}
 .empty{color:var(--ink-dim); font-size:.85rem; text-align:center; padding:20px 0}
 textarea#exportArea{width:100%; min-height:140px; margin-top:10px; padding:10px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-family:monospace; font-size:.8rem; display:none}
 footer{max-width:100%;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--ink-dim);font-size:.75rem;line-height:1.5}
@@ -158,14 +161,116 @@ body.noscroll{overflow:hidden}
 .rgroup{margin:16px 0 6px; font-size:.78rem; font-weight:700; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.4px}
 .ritem{display:block; width:100%; min-height:44px; padding:8px 12px; margin-bottom:6px;
   background:var(--panel); border:1px solid var(--line); border-radius:10px; color:var(--ink); font:inherit; font-size:.92rem; text-align:left; cursor:pointer}
+.print-one{display:block; width:100%; min-height:44px; margin-top:10px; border-radius:8px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font:inherit; font-weight:600; font-size:.88rem; cursor:pointer}
+
+/* Batalha */
+.btn{min-height:44px; padding:0 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font:inherit; font-weight:600; font-size:.9rem; cursor:pointer}
+.btn.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.btn.wide{display:block; width:100%}
+.bat-top{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px}
+.bat-count{font-size:.85rem; color:var(--ink-dim)}
+.bcard{display:flex; align-items:center; width:100%; min-height:64px; padding:0; margin-bottom:8px; text-align:left; cursor:pointer; overflow:hidden;
+  background:var(--panel); border:1px solid var(--line); border-radius:10px; color:var(--ink); font:inherit}
+.bcard .bar{flex:none; align-self:stretch; width:10px}
+.c-bg0{background:var(--green)} .c-bg1{background:var(--yellow)} .c-bg2{background:var(--red)}
+.bcard .bbody{flex:1; min-width:0; padding:10px 12px}
+.bcard .bname{display:block; font-weight:700; font-size:.98rem}
+.bcard .bstats{display:flex; flex-wrap:wrap; gap:2px 14px; margin-top:3px; font-size:.84rem; color:var(--ink-dim)}
+.bcard .bstats b{color:var(--ink)}
+.bcard .bstate{flex:none; display:flex; align-items:center; gap:5px; font-size:.78rem; font-weight:700; color:var(--ink-dim)}
+.dot{display:inline-block; width:12px; height:12px; border-radius:50%}
+.bcard .chev{flex:none; padding:0 12px 0 8px; font-size:1.4rem; color:var(--ink-dim)}
+.bcard.dead{opacity:.6; filter:grayscale(1); background:var(--chip)}
+.bcard.dead .bar{background:var(--ink-dim)}
+.bcard.dead .bname{text-decoration:line-through}
+.bcard.dead .bstate{color:var(--ink); text-transform:uppercase; letter-spacing:.4px}
+.back{min-height:44px; padding:0 14px 0 10px; margin-bottom:10px; border:none; border-radius:10px; background:var(--chip); color:var(--ink); font:inherit; font-weight:700; font-size:.95rem; cursor:pointer}
+.bd-title{font-size:1.15rem; font-weight:700}
+.state-row{display:flex; align-items:center; gap:10px; min-height:34px; margin-top:8px}
+.state-pill{display:inline-flex; align-items:center; min-height:30px; padding:0 12px; border-radius:999px; font-size:.82rem; font-weight:700; color:#fff}
+.state-pill.term{text-decoration:none}
+.state-pill.term::before{content:none}
+.state-pill.dead{background:#555; letter-spacing:.5px; text-transform:uppercase}
+.state-hint{font-size:.78rem; color:var(--ink-dim)}
+.v3{display:flex; justify-content:center; align-items:baseline; gap:9px; margin-top:2px}
+.v3 span{font-size:.85rem; font-weight:600; opacity:.35}
+.v3 .c0{color:var(--green)} .v3 .c1{color:var(--yellow)} .v3 .c2{color:var(--red)}
+.v3 span.cur{font-size:1.55rem; font-weight:800; opacity:1}
+.wdmg{margin-top:4px; font-size:.85rem}
+.wdmg .v3{display:inline-flex; gap:7px; margin:0 0 0 4px}
+.wdmg .v3 span.cur{font-size:1.25rem}
+.bd.dead .stat-grid, .bd.dead .wdmg .v3{opacity:.45; filter:grayscale(1)}
+.track{margin-top:16px}
+.track-head{display:flex; align-items:center; gap:6px; margin-bottom:6px}
+.track-head .tname{flex:1; font-weight:700; font-size:.95rem}
+.track-head .tval{font-size:1.15rem; font-weight:800; margin-right:4px; white-space:nowrap}
+.step{flex:none; min-width:48px; height:44px; padding:0 8px; border-radius:10px; border:1px solid var(--line); background:var(--chip); color:var(--ink); font:inherit; font-weight:700; font-size:1rem; cursor:pointer; touch-action:manipulation}
+.step:disabled{opacity:.35; cursor:default}
+.cells{display:grid; grid-template-columns:repeat(var(--cols),1fr); gap:4px}
+.cell{position:relative; min-width:0; min-height:46px; padding:0; border-radius:8px; border:2px solid var(--line); background:var(--armcell); color:var(--ink);
+  font:inherit; font-weight:700; font-size:1.05rem; cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent}
+.cell.s0{background:var(--green); border-color:var(--green); color:#fff}
+.cell.s1{background:var(--yellow); border-color:var(--yellow); color:#fff}
+.cell.s2{background:var(--red); border-color:var(--red); color:#fff}
+.cell.x{background:var(--panel); color:var(--ink-dim)}
+.cell.x::after{content:""; position:absolute; inset:6px; pointer-events:none; opacity:.6;
+  background:linear-gradient(to top right, transparent 47%, var(--ink) 47%, var(--ink) 53%, transparent 53%),
+             linear-gradient(to top left, transparent 47%, var(--ink) 47%, var(--ink) 53%, transparent 53%)}
+.cell.cur{outline:3px solid var(--ink); outline-offset:-1px; font-size:1.3rem; z-index:1}
+.uses{display:flex; align-items:center; gap:6px; margin-top:6px; font-size:.85rem; color:var(--ink-dim)}
+.uses b{color:var(--ink); font-size:.95rem; margin-right:6px}
+.uses b.zero{color:var(--red)}
+.uses .step{min-width:44px; height:40px}
+.upg{font-weight:600}
+.upg-note{font-size:.75rem; color:var(--ink-dim); margin-left:4px}
+#toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); z-index:30; max-width:90vw;
+  transform:translate(-50%,16px); opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+  background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:10px; font-size:.9rem; box-shadow:0 4px 14px rgba(0,0,0,.3)}
+#toast.show{opacity:1; transform:translate(-50%,0)}
+
+/* Impressão: só a área preparada, sempre em tema claro. */
+#printArea{display:none}
+@media print{
+  @page{margin:10mm}
+  :root{padding:0}
+  body.printing{background:#fff !important; color:#111 !important}
+  body.printing > :not(#printArea){display:none !important}
+  body.printing #printArea{display:block}
+  #printArea{font-family:Arial,Helvetica,sans-serif; font-size:10pt; color:#111; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .pu{break-inside:avoid; page-break-inside:avoid; border:1px solid #888; border-radius:3mm; padding:4mm 5mm; margin:0 0 5mm}
+  .ph{font-size:8pt; color:#555; letter-spacing:.3px}
+  .ptitle{display:flex; justify-content:space-between; align-items:baseline; font-size:15pt; font-weight:700; margin-top:1mm}
+  .psub{font-size:9pt; color:#444; margin-bottom:2mm}
+  .pu table{border-collapse:collapse; width:100%}
+  .pu th, .pu td{border:1px solid #bbb; padding:1mm 1.5mm; text-align:left; vertical-align:top}
+  .pu th{background:#eee; font-size:8.5pt}
+  .pgrid{display:flex; gap:4mm; align-items:flex-start}
+  .patt{flex:1}
+  .patt td{text-align:center; font-weight:700; font-size:11pt}
+  .pmisc{flex:none; font-size:9pt; line-height:1.5}
+  .pc0{color:#1d6b2c} .pc1{color:#8a6500} .pc2{color:#a02c20}
+  .pu th.pc0{background:#d5ecd8} .pu th.pc1{background:#f7e7b0} .pu th.pc2{background:#f3cdc8}
+  .pspecial{font-size:9pt; font-style:italic; margin-top:2mm}
+  .pweap{margin-top:2mm; font-size:8.5pt}
+  .pen{color:#666; font-size:8pt}
+  .pboxes{margin-top:1mm}
+  .pbox{display:inline-block; width:3.2mm; height:3.2mm; border:1px solid #555; margin:0 .6mm .6mm 0; vertical-align:middle}
+  .ptrack{display:flex; align-items:center; gap:2mm; margin-top:2.5mm}
+  .ptl{flex:none; width:20mm; font-weight:700; font-size:9.5pt}
+  .pcells{display:flex; flex-wrap:wrap; gap:1mm}
+  .pcell{display:inline-flex; align-items:center; justify-content:center; width:9mm; height:9mm; border:1px solid #666; border-radius:1mm; font-size:9pt; font-weight:700; background:#fff}
+  .ps0{background:#cfe8d3} .ps1{background:#f6e3a1} .ps2{background:#f2c2bc}
+  .pcred{margin-top:2.5mm; font-size:7pt; color:#666}
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>⚙️ Battle Hulks PT-BR</h1>
+  <div class="brand"><span class="gear" aria-hidden="true">⚙️</span><div><h1>C3 Hulks</h1><div class="brand-sub">Battle Hulks · PT-BR</div></div></div>
   <nav>
     <button id="tabFichas" class="active">Fichas</button>
-    <button id="tabLista">Lista de Combate</button>
+    <button id="tabLista">Lista</button>
+    <button id="tabBatalha">Batalha</button>
     <button id="tabRegras">Regras</button>
   </nav>
 </header>
@@ -188,6 +293,8 @@ body.noscroll{overflow:hidden}
     <div id="forceList"></div>
     <div class="actions">
       <button id="exportBtn">Exportar como texto</button>
+      <button id="shareBtn">Compartilhar</button>
+      <button id="printListBtn">Imprimir fichas da lista</button>
       <button id="clearBtn">Limpar lista</button>
     </div>
     <textarea id="exportArea" readonly></textarea>
@@ -195,6 +302,10 @@ body.noscroll{overflow:hidden}
       <span>Total: <strong id="totalPts">0</strong> pts</span>
       <span id="remainSpan">Restam 500 pts</span>
     </div>
+  </section>
+  <section id="viewBatalha" style="display:none">
+    <div id="batList"></div>
+    <div id="batDetail" style="display:none"></div>
   </section>
   <section id="viewRegras" style="display:none">
     <input class="search" id="rulesSearch" type="search" placeholder="Buscar regra (termo, apelido, texto)..." autocomplete="off">
@@ -207,61 +318,63 @@ body.noscroll{overflow:hidden}
   <div class="sheet-head"><h2 id="sheetTitle"></h2><button type="button" class="sheet-close" id="sheetClose" aria-label="Fechar">✕</button></div>
   <div class="sheet-body" id="sheetBody"></div>
 </div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="printArea" aria-hidden="true"></div>
 <footer>
   <div>Battle Hulks &copy; Fat Dragon Games, usado com permiss&atilde;o. Projeto de f&atilde; n&atilde;o oficial.</div>
   <div>Feito por Felipe (fozzimus), com apoio do Claude (Anthropic).</div>
-  <div class="ver">v3 &middot; 01/10/2026</div>
+  <div class="ver">v4 &middot; 02/10/2026</div>
 </footer>
 <script>
 const UNITS = [
-{n:"Storm Hulk Mk.I",tipo:"Hulk",classe:"Médio",pts:150,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:4,arm:8,str:8,special:null,ficha:"Hulk #01"},
-{n:"Dusk Reaper Mk.I",tipo:"Hulk",classe:"Médio",pts:160,def:[3,2,1],atk:[4,3,2],mov:[7,6,5],fuel:10,heat:3,arm:6,str:7,special:null,ficha:"Hulk #02"},
-{n:"Void Knight Mk.I",tipo:"Hulk",classe:"Médio",pts:135,def:[4,3,2],atk:[3,3,2],mov:[8,7,6],fuel:10,heat:3,arm:6,str:5,special:null,ficha:"Hulk #03"},
-{n:"Steel Crusader Mk.I",tipo:"Hulk",classe:"Médio",pts:155,def:[3,2,1],atk:[5,4,3],mov:[7,6,5],fuel:9,heat:4,arm:6,str:6,special:null,ficha:"Hulk #04"},
-{n:"Iron Guardian Mk.I",tipo:"Hulk",classe:"Médio",pts:125,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:3,arm:7,str:8,special:null,ficha:"Hulk #05"},
-{n:"Doom Reaper Mk.I",tipo:"Hulk",classe:"Médio",pts:120,def:[4,3,2],atk:[3,3,2],mov:[8,7,6],fuel:7,heat:3,arm:6,str:5,special:null,ficha:"Hulk #06"},
-{n:"Thunder Crusader Mk.I",tipo:"Hulk",classe:"Pesado",pts:195,def:[2,2,1],atk:[5,4,3],mov:[5,4,3],fuel:11,heat:5,arm:10,str:10,special:null,ficha:"Hulk #07"},
-{n:"Storm Guardian Mk.I",tipo:"Hulk",classe:"Pesado",pts:215,def:[2,2,1],atk:[5,4,3],mov:[5,4,3],fuel:10,heat:5,arm:10,str:10,special:null,ficha:"Hulk #08"},
-{n:"Iron Sentinel Mk.I",tipo:"Hulk",classe:"Médio",pts:160,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:4,arm:7,str:7,special:null,ficha:"Hulk #09"},
-{n:"Steel Crusader Mk.II",tipo:"Hulk",classe:"Médio",pts:160,def:[3,2,1],atk:[4,3,2],mov:[7,6,5],fuel:10,heat:4,arm:6,str:6,special:null,ficha:"Hulk #10"},
-{n:"Specter Mk.I",tipo:"Tanque",classe:"Leve",pts:65,def:[4,3,3],atk:[2,2,1],mov:[8,7,6],fuel:0,heat:2,arm:4,str:4,special:"Hovering: esta unidade ignora terreno difícil.",ficha:"Tank #01"},
-{n:"Chimera Mk.I",tipo:"Tanque",classe:"Leve",pts:70,def:[4,3,3],atk:[2,2,1],mov:[8,7,6],fuel:0,heat:2,arm:4,str:4,special:"Hovering: esta unidade ignora terreno difícil.",ficha:"Tank #02"},
+{n:"Storm Hulk Mk.I",tipo:"Hulk",classe:"Médio",pts:150,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:4,arm:8,str:8,special:null,ficha:"Hulk #01",str_amarelo:3,str_verde:6},
+{n:"Dusk Reaper Mk.I",tipo:"Hulk",classe:"Médio",pts:160,def:[3,2,1],atk:[4,3,2],mov:[7,6,5],fuel:10,heat:3,arm:6,str:7,special:null,ficha:"Hulk #02",str_amarelo:3,str_verde:6},
+{n:"Void Knight Mk.I",tipo:"Hulk",classe:"Médio",pts:135,def:[4,3,2],atk:[3,3,2],mov:[8,7,6],fuel:10,heat:3,arm:6,str:5,special:null,ficha:"Hulk #03",str_amarelo:2,str_verde:4},
+{n:"Steel Crusader Mk.I",tipo:"Hulk",classe:"Médio",pts:155,def:[3,2,1],atk:[5,4,3],mov:[7,6,5],fuel:9,heat:4,arm:6,str:6,special:null,ficha:"Hulk #04",str_amarelo:3,str_verde:5},
+{n:"Iron Guardian Mk.I",tipo:"Hulk",classe:"Médio",pts:125,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:3,arm:7,str:8,special:null,ficha:"Hulk #05",str_amarelo:3,str_verde:6},
+{n:"Doom Reaper Mk.I",tipo:"Hulk",classe:"Médio",pts:120,def:[4,3,2],atk:[3,3,2],mov:[8,7,6],fuel:7,heat:3,arm:6,str:5,special:null,ficha:"Hulk #06",str_amarelo:2,str_verde:4},
+{n:"Thunder Crusader Mk.I",tipo:"Hulk",classe:"Pesado",pts:195,def:[2,2,1],atk:[5,4,3],mov:[5,4,3],fuel:11,heat:5,arm:10,str:10,special:null,ficha:"Hulk #07",str_amarelo:3,str_verde:7},
+{n:"Storm Guardian Mk.I",tipo:"Hulk",classe:"Pesado",pts:215,def:[2,2,1],atk:[5,4,3],mov:[5,4,3],fuel:10,heat:5,arm:10,str:10,special:null,ficha:"Hulk #08",str_amarelo:4,str_verde:8},
+{n:"Iron Sentinel Mk.I",tipo:"Hulk",classe:"Médio",pts:160,def:[3,2,1],atk:[4,3,2],mov:[6,5,4],fuel:8,heat:4,arm:7,str:7,special:null,ficha:"Hulk #09",str_amarelo:3,str_verde:6},
+{n:"Steel Crusader Mk.II",tipo:"Hulk",classe:"Médio",pts:160,def:[3,2,1],atk:[4,3,2],mov:[7,6,5],fuel:10,heat:4,arm:6,str:6,special:null,ficha:"Hulk #10",str_amarelo:3,str_verde:5},
+{n:"Specter Mk.I",tipo:"Tanque",classe:"Leve",pts:65,def:[4,3,3],atk:[2,2,1],mov:[8,7,6],fuel:0,heat:2,arm:4,str:4,special:"Hovering: esta unidade ignora terreno difícil.",ficha:"Tank #01",str_amarelo:2,str_verde:3},
+{n:"Chimera Mk.I",tipo:"Tanque",classe:"Leve",pts:70,def:[4,3,3],atk:[2,2,1],mov:[8,7,6],fuel:0,heat:2,arm:4,str:4,special:"Hovering: esta unidade ignora terreno difícil.",ficha:"Tank #02",str_amarelo:2,str_verde:3},
 ];
 const WEAPONS = [
-{u:"Storm Hulk Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'12"',dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-perfurante"]},
-{u:"Storm Hulk Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'12"',dmg:"3 / 3 / 2",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-explosiva-metralhadora","dado-explosivo"]},
-{u:"Storm Hulk Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"]},
-{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'15"',dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"]},
-{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'15"',dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"]},
-{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"]},
-{u:"Void Knight Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida"]},
-{u:"Void Knight Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida"]},
-{u:"Void Knight Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'14"',dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"]},
-{u:"Void Knight Mk.I",cat:"Melhoria",n:"Blindagem Ablativa",en:"Ablative Armor",tipo:"Energia",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques de energia (Seção 8.1)",lembretes:["blindagem-ablativa","melhorias"]},
-{u:"Steel Crusader Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'13"',dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"]},
-{u:"Steel Crusader Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'13"',dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"]},
-{u:"Steel Crusader Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"]},
-{u:"Steel Crusader Mk.I",cat:"Melhoria",n:"Blindagem Reativa",en:"Reactive Armor",tipo:"Cinético",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques cinéticos à distância (Seção 8.2)",lembretes:["blindagem-reativa","melhorias"]},
-{u:"Iron Guardian Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida"]},
-{u:"Iron Guardian Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'14"',dmg:"3 / 2 / 1",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"]},
-{u:"Doom Reaper Mk.I",cat:"Arma",n:"Míssil",en:"Missiles",tipo:"Cinético",range:'08-22"',dmg:"3 / 3 / 3",obs:"4 Mísseis",lembretes:["dados-de-ataque","cinetico-energia","alcance","missil","usos-por-partida","dado-explosivo"]},
-{u:"Doom Reaper Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'12"',dmg:"3 / 2 / 1",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-perfurante"]},
-{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'16"',dmg:"4 / 3 / 3",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-perfurante"]},
-{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'16"',dmg:"4 / 3 / 3",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-explosiva-canhao","dado-explosivo"]},
-{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Míssil",en:"Missiles",tipo:"Cinético",range:'08-24"',dmg:"3 / 3 / 3",obs:"4 Mísseis",lembretes:["dados-de-ataque","cinetico-energia","alcance","missil","usos-por-partida","dado-explosivo"]},
-{u:"Storm Guardian Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'16"',dmg:"4 / 4 / 3",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"]},
-{u:"Storm Guardian Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:'16"',dmg:"4 / 4 / 3",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"]},
-{u:"Storm Guardian Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'14"',dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-perfurante"]},
-{u:"Storm Guardian Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:'14"',dmg:"3 / 3 / 2",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-explosiva-metralhadora","dado-explosivo"]},
-{u:"Iron Sentinel Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'15"',dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-perfurante"]},
-{u:"Iron Sentinel Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:'15"',dmg:"3 / 3 / 2",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-explosiva-canhao","dado-explosivo"]},
-{u:"Iron Sentinel Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x8)",en:"AHM x8",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"]},
-{u:"Steel Crusader Mk.II",cat:"Arma",n:"Canhão Rotativo",en:"Rotary Cannon",tipo:"Cinético",range:'13"',dmg:"3 / 3 / 2",obs:"Fogo sustentado: +1d6 (+1 Calor) ou +2d6 (+3 Calor)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-rotativo"]},
-{u:"Steel Crusader Mk.II",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:'14"',dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"]},
-{u:"Steel Crusader Mk.II",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x5)",en:"AHM x5",tipo:"Cinético",range:'8-16"',dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"]},
-{u:"Steel Crusader Mk.II",cat:"Melhoria",n:"Blindagem Ablativa",en:"Ablative Armor",tipo:"Energia",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques de energia (Seção 8.1)",lembretes:["blindagem-ablativa","melhorias"]},
-{u:"Specter Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Guns",tipo:"Energia",range:'11"',dmg:"2 / 2 / 1",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"]},
-{u:"Chimera Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:'4-12"',dmg:"1 / 1 / 1",obs:"16 Foguetes. *Podem ser recarregados na área de implantação; leva 1 turno completo.",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida","recarga-foguetes"]},
+{u:"Storm Hulk Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:"12\"",dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-perfurante"],usos:null},
+{u:"Storm Hulk Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:"12\"",dmg:"3 / 3 / 2",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-explosiva-metralhadora","dado-explosivo"],usos:null},
+{u:"Storm Hulk Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:"8-16\"",dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"],usos:6},
+{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:"15\"",dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"],usos:null},
+{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:"15\"",dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"],usos:null},
+{u:"Dusk Reaper Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:"8-16\"",dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"],usos:6},
+{u:"Void Knight Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:"4-12\"",dmg:"1 / 1 / 1",obs:"16 Foguetes",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida"],usos:16},
+{u:"Void Knight Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:"4-12\"",dmg:"1 / 1 / 1",obs:"16 Foguetes",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida"],usos:16},
+{u:"Void Knight Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:"14\"",dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"],usos:null},
+{u:"Void Knight Mk.I",cat:"Melhoria",n:"Blindagem Ablativa",en:"Ablative Armor",tipo:"Energia",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques de energia (Seção 8.1)",lembretes:["blindagem-ablativa","melhorias"],usos:null,pontos:2},
+{u:"Steel Crusader Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:"13\"",dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"],usos:null},
+{u:"Steel Crusader Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:"13\"",dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"],usos:null},
+{u:"Steel Crusader Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x6)",en:"AHM x6",tipo:"Cinético",range:"8-16\"",dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"],usos:6},
+{u:"Steel Crusader Mk.I",cat:"Melhoria",n:"Blindagem Reativa",en:"Reactive Armor",tipo:"Cinético",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques cinéticos à distância (Seção 8.2)",lembretes:["blindagem-reativa","melhorias"],usos:null,pontos:2},
+{u:"Iron Guardian Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:"4-12\"",dmg:"1 / 1 / 1",obs:"16 Foguetes",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida"],usos:16},
+{u:"Iron Guardian Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:"14\"",dmg:"3 / 2 / 1",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"],usos:null},
+{u:"Doom Reaper Mk.I",cat:"Arma",n:"Míssil",en:"Missiles",tipo:"Cinético",range:"08-22\"",dmg:"3 / 3 / 3",obs:"4 Mísseis",lembretes:["dados-de-ataque","cinetico-energia","alcance","missil","usos-por-partida","dado-explosivo"],usos:4},
+{u:"Doom Reaper Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:"12\"",dmg:"3 / 2 / 1",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-perfurante"],usos:null},
+{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:"16\"",dmg:"4 / 3 / 3",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-perfurante"],usos:null},
+{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:"16\"",dmg:"4 / 3 / 3",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-explosiva-canhao","dado-explosivo"],usos:null},
+{u:"Thunder Crusader Mk.I",cat:"Arma",n:"Míssil",en:"Missiles",tipo:"Cinético",range:"08-24\"",dmg:"3 / 3 / 3",obs:"4 Mísseis",lembretes:["dados-de-ataque","cinetico-energia","alcance","missil","usos-por-partida","dado-explosivo"],usos:4},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:"16\"",dmg:"4 / 4 / 3",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"],usos:null},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Canhão a Laser",en:"Laser Cannon",tipo:"Energia",range:"16\"",dmg:"4 / 4 / 3",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-laser"],usos:null},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:"14\"",dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-perfurante"],usos:null},
+{u:"Storm Guardian Mk.I",cat:"Arma",n:"Metralhadora Giratória (Chain Gun)",en:"Chain Guns",tipo:"Cinético",range:"14\"",dmg:"3 / 3 / 2",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","metralhadora-giratoria","municao-explosiva-metralhadora","dado-explosivo"],usos:null},
+{u:"Iron Sentinel Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:"15\"",dmg:"3 / 3 / 2",obs:"Munição Perfurante (Armor Piercing)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-perfurante"],usos:null},
+{u:"Iron Sentinel Mk.I",cat:"Arma",n:"Canhão",en:"Cannon",tipo:"Cinético",range:"15\"",dmg:"3 / 3 / 2",obs:"Munição Explosiva",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao","municao-explosiva-canhao","dado-explosivo"],usos:null},
+{u:"Iron Sentinel Mk.I",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x8)",en:"AHM x8",tipo:"Cinético",range:"8-16\"",dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"],usos:8},
+{u:"Steel Crusader Mk.II",cat:"Arma",n:"Canhão Rotativo",en:"Rotary Cannon",tipo:"Cinético",range:"13\"",dmg:"3 / 3 / 2",obs:"Fogo sustentado: +1d6 (+1 Calor) ou +2d6 (+3 Calor)",lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-rotativo"],usos:null},
+{u:"Steel Crusader Mk.II",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Gun",tipo:"Energia",range:"14\"",dmg:"3 / 3 / 2",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"],usos:null},
+{u:"Steel Crusader Mk.II",cat:"Arma",n:"Morteiro Anti-Hulk (AHM x5)",en:"AHM x5",tipo:"Cinético",range:"8-16\"",dmg:"3/2 (Solo/Ar) em todos os estados",obs:"Dados de ataque Solo/Ar por coluna; ver Seção 7.1 do manual",lembretes:["dados-de-ataque","cinetico-energia","alcance","ahm","usos-por-partida"],usos:5},
+{u:"Steel Crusader Mk.II",cat:"Melhoria",n:"Blindagem Ablativa",en:"Ablative Armor",tipo:"Energia",range:"—",dmg:"+2 pts",obs:"Reduz dano de ataques de energia (Seção 8.1)",lembretes:["blindagem-ablativa","melhorias"],usos:null,pontos:2},
+{u:"Specter Mk.I",cat:"Arma",n:"Canhão de Plasma",en:"Plasma Guns",tipo:"Energia",range:"11\"",dmg:"2 / 2 / 1",obs:null,lembretes:["dados-de-ataque","cinetico-energia","alcance","canhao-plasma"],usos:null},
+{u:"Chimera Mk.I",cat:"Arma",n:"Foguete",en:"Rockets",tipo:"Cinético",range:"4-12\"",dmg:"1 / 1 / 1",obs:"16 Foguetes. *Podem ser recarregados na área de implantação; leva 1 turno completo.",lembretes:["dados-de-ataque","cinetico-energia","alcance","foguete","usos-por-partida","recarga-foguetes"],usos:16},
 ];
 // Lembretes de regras: {id, bloco, termo, aliases, texto, ref, formato}.
 const RULES = [
@@ -269,8 +382,8 @@ const RULES = [
 {id:"classe",bloco:"A · Atributos da ficha",termo:"Classe",aliases:"Tamanho; Leve; Médio; Pesado",texto:"Tamanho da unidade. Define os dados extras do Ataque com Salto e o dano quando um Hulk cai sobre outra unidade: Leve 1d6, Médio 2d6, Pesado 3d6.",ref:"4.4, 6.11",formato:"texto"},
 {id:"defesa",bloco:"A · Atributos da ficha",termo:"Defesa",aliases:"DEF",texto:"Dados que você rola contra cada ataque recebido. Cada 5 ou 6 cancela um acerto do atacante, começando pelos 4. Contra ataques à distância: +1d6 se estiver mais alto que o atacante ou em cobertura parcial.",ref:"6.7, 6.8",formato:"texto"},
 {id:"ataque-corpo-a-corpo",bloco:"A · Atributos da ficha",termo:"Ataque Corpo a Corpo",aliases:"ATK; Ataque",texto:"Dados do ataque em contato base a base. Acerta com 4, 5 ou 6: 4–5 causa 1 de dano, 6 causa 2. Não recebe modificadores de combate, mas ganha +1d6 pelo arco traseiro do alvo. Também é a base da Investida e do Ataque com Salto.",ref:"6.1, 6.3, 6.7",formato:"texto"},
-{id:"movimento",bloco:"A · Atributos da ficha",termo:"Movimento",aliases:"MOV; Pontos de Movimento",texto:'Pontos de Movimento por turno. Terreno fácil: 1 ponto = 1". Terreno difícil (água, pântano, crateras, encostas): 2 pontos = 1". Pode girar à vontade durante o movimento, mas girar parado conta como ação de movimento.',ref:"4.2, 5.0, 5.1",formato:"texto"},
-{id:"combustivel",bloco:"A · Atributos da ficha",termo:"Combustível",aliases:"FUEL",texto:'Gasto em saltos: curto 1, longo 2, ataque com salto 3. Nunca é reabastecido. Se o Hulk for destruído, o que sobrou explode: metade do combustível em d6 (arredondado para cima) contra tudo a até 3".',ref:"4.2–4.5, 6.9",formato:"texto"},
+{id:"movimento",bloco:"A · Atributos da ficha",termo:"Movimento",aliases:"MOV; Pontos de Movimento",texto:"Pontos de Movimento por turno. Terreno fácil: 1 ponto = 1\". Terreno difícil (água, pântano, crateras, encostas): 2 pontos = 1\". Pode girar à vontade durante o movimento, mas girar parado conta como ação de movimento.",ref:"4.2, 5.0, 5.1",formato:"texto"},
+{id:"combustivel",bloco:"A · Atributos da ficha",termo:"Combustível",aliases:"FUEL",texto:"Gasto em saltos: curto 1, longo 2, ataque com salto 3. Nunca é reabastecido. Se o Hulk for destruído, o que sobrou explode: metade do combustível em d6 (arredondado para cima) contra tudo a até 3\".",ref:"4.2–4.5, 6.9",formato:"texto"},
 {id:"calor-maximo",bloco:"A · Atributos da ficha",termo:"Calor Máximo",aliases:"Classificação de Calor; H; Calor Máx.",texto:"Se terminar o turno no Calor Máximo ou acima, role 2d6 na Tabela de Calor, +1 por ponto acima. Cada unidade nesse estado tira 1 da iniciativa do seu lado. Ao chegar ao dobro, desliga por 2 turnos e o calor zera.",ref:"4.0, 9.2",formato:"texto"},
 {id:"blindagem",bloco:"A · Atributos da ficha",termo:"Blindagem",aliases:"ARM; Blindagem Máx.",texto:"Primeira camada de proteção: todo dano vai para a Blindagem até ela acabar, e só depois para a Estrutura.",ref:"6.8",formato:"texto"},
 {id:"estrutura",bloco:"A · Atributos da ficha",termo:"Estrutura",aliases:"STR; Estrutura Máx.",texto:"Recebe o dano depois que a Blindagem acaba. Conforme cai, a trilha passa de Verde para Amarelo e Vermelho. Em 0, o Hulk é destruído.",ref:"6.8, 6.9",formato:"texto"},
@@ -278,9 +391,9 @@ const RULES = [
 {id:"hovering",bloco:"A · Atributos da ficha",termo:"Hovering",aliases:"Hover; tanque hover",texto:"A unidade ignora terreno difícil: atravessa água, crateras e afins como se fosse terreno fácil.",ref:"Carta da unidade; legenda em 5.1",formato:"texto"},
 {id:"dados-de-ataque",bloco:"B · Armas e munições",termo:"Dados de Ataque",aliases:"Valor da arma",texto:"Dados que a arma rola por ataque, pelo valor da cor atual da Estrutura. Cada 4, 5 ou 6 acerta, e o dano de cada acerto depende da arma. +1d6 se estiver mais alto que o alvo ou atacando pelo arco traseiro dele.",ref:"6.2, 6.3, 6.7, 6.8",formato:"texto"},
 {id:"cinetico-energia",bloco:"B · Armas e munições",termo:"Cinético e Energia",aliases:"K; E",texto:"Tipo do ataque. Define qual blindagem especial reduz o dano (Ablativa contra Energia, Reativa contra Cinético à distância). A Repulsão só vale em ataques cinéticos, e a Bateria só em armas de energia.",ref:"6.10, 8.0, 10.0",formato:"texto"},
-{id:"alcance",bloco:"B · Armas e munições",termo:"Alcance",aliases:"Alcance mínimo; metade do alcance",texto:'Um número é o alcance máximo. Dois números (ex.: 8-16) são o mínimo e o máximo, e a arma não pode atirar abaixo do mínimo. Meça de borda a borda das bases. "Metade do alcance" arredonda para cima.',ref:"6.4",formato:"texto"},
+{id:"alcance",bloco:"B · Armas e munições",termo:"Alcance",aliases:"Alcance mínimo; metade do alcance",texto:"Um número é o alcance máximo. Dois números (ex.: 8-16) são o mínimo e o máximo, e a arma não pode atirar abaixo do mínimo. Meça de borda a borda das bases. \"Metade do alcance\" arredonda para cima.",ref:"6.4",formato:"texto"},
 {id:"usos-por-partida",bloco:"B · Armas e munições",termo:"Usos por partida",aliases:"Munição; xN",texto:"Mísseis e AHM: o número é quantos ataques a arma pode fazer na partida. Foguetes: o número é o total de foguetes, e cada ataque lança de 1 a 4 (16 foguetes = no máximo 4 salvas cheias).",ref:"—",formato:"texto"},
-{id:"ahm",bloco:"B · Armas e munições",termo:"Morteiro Anti-Hulk (AHM)",aliases:"AHM",texto:'Atira por cima de cobertura e explode sobre o alvo, atingindo todas as unidades no raio. Os dois valores são Solo (raio 1", mais dados) e Aérea (raio 2", menos dados). Exige linha de visada até o ponto de detonação e respeita o alcance mínimo. Acertos: 4–5 = 1 de dano, 6 = 2.',ref:"7.1",formato:"texto"},
+{id:"ahm",bloco:"B · Armas e munições",termo:"Morteiro Anti-Hulk (AHM)",aliases:"AHM",texto:"Atira por cima de cobertura e explode sobre o alvo, atingindo todas as unidades no raio. Os dois valores são Solo (raio 1\", mais dados) e Aérea (raio 2\", menos dados). Exige linha de visada até o ponto de detonação e respeita o alcance mínimo. Acertos: 4–5 = 1 de dano, 6 = 2.",ref:"7.1",formato:"texto"},
 {id:"canhao",bloco:"B · Armas e munições",termo:"Canhão",aliases:"Cannon",texto:"Acertos: 4–5 = 1 de dano, 6 = 2. Confira a munição indicada na ficha.",ref:"7.2",formato:"texto"},
 {id:"metralhadora-giratoria",bloco:"B · Armas e munições",termo:"Metralhadora Giratória",aliases:"Chain Gun; Chain Guns",texto:"Acertos: 4–5 = 1 de dano, 6 = 2. Confira a munição indicada na ficha.",ref:"7.3",formato:"texto"},
 {id:"canhao-laser",bloco:"B · Armas e munições",termo:"Canhão a Laser",aliases:"Laser Cannon",texto:"Acertos: 4–5 = 1 de dano, 6 = 2 de dano e +1 Ponto de Calor no alvo.",ref:"7.4",formato:"texto"},
@@ -306,28 +419,28 @@ const RULES = [
 {id:"acao-especial",bloco:"D · Regras gerais",termo:"Ação Especial",aliases:"",texto:"Ocupa as 2 ações padrão, mas ainda permite uma Ação Forçada (+1 Ponto de Calor). Exemplos: Salto Longo e Ventilação Total.",ref:"4.1, 4.3",formato:"texto"},
 {id:"acao-complexa",bloco:"D · Regras gerais",termo:"Ação Complexa",aliases:"",texto:"Ocupa as 2 ações padrão e não permite Ação Forçada. Exemplo: Ataque com Salto.",ref:"4.1, 4.4",formato:"texto"},
 {id:"movimento-terrestre",bloco:"D · Regras gerais",termo:"Movimento Terrestre",aliases:"Girar",texto:"1 ação padrão. Gasta Pontos de Movimento e inclui a Investida. Girar parado também conta como esta ação.",ref:"4.2",formato:"texto"},
-{id:"salto-curto",bloco:"D · Regras gerais",termo:"Salto Curto",aliases:"Foguetes de salto",texto:'1 ação padrão. Até 6" de altura ou distância, por 1 de Combustível.',ref:"4.2",formato:"texto"},
-{id:"salto-longo",bloco:"D · Regras gerais",termo:"Salto Longo",aliases:"",texto:'Ação especial. Até 10" de altura ou distância, por 2 de Combustível e +1 Ponto de Calor.',ref:"4.3",formato:"texto"},
-{id:"ataque-com-salto",bloco:"D · Regras gerais",termo:"Ataque com Salto",aliases:"",texto:'Ação complexa. Até 8", por 3 de Combustível e +1 Ponto de Calor. Dados: Ataque Corpo a Corpo + classe (Leve 1d6, Médio 2d6, Pesado 3d6), cinético. Termina encostado no alvo. Acertos: 4–5 = 1 de dano, 6 = 2.',ref:"4.4",formato:"texto"},
+{id:"salto-curto",bloco:"D · Regras gerais",termo:"Salto Curto",aliases:"Foguetes de salto",texto:"1 ação padrão. Até 6\" de altura ou distância, por 1 de Combustível.",ref:"4.2",formato:"texto"},
+{id:"salto-longo",bloco:"D · Regras gerais",termo:"Salto Longo",aliases:"",texto:"Ação especial. Até 10\" de altura ou distância, por 2 de Combustível e +1 Ponto de Calor.",ref:"4.3",formato:"texto"},
+{id:"ataque-com-salto",bloco:"D · Regras gerais",termo:"Ataque com Salto",aliases:"",texto:"Ação complexa. Até 8\", por 3 de Combustível e +1 Ponto de Calor. Dados: Ataque Corpo a Corpo + classe (Leve 1d6, Médio 2d6, Pesado 3d6), cinético. Termina encostado no alvo. Acertos: 4–5 = 1 de dano, 6 = 2.",ref:"4.4",formato:"texto"},
 {id:"ventilacao-parcial",bloco:"D · Regras gerais",termo:"Ventilação Parcial",aliases:"Ventilar",texto:"1 ação padrão. Reduz o calor em 1.",ref:"4.2",formato:"texto"},
 {id:"ventilacao-total",bloco:"D · Regras gerais",termo:"Ventilação Total",aliases:"Ventilar",texto:"Ação especial. Zera o calor. Uma Ação Forçada feita depois ainda gera +1 Ponto de Calor.",ref:"4.3",formato:"texto"},
-{id:"terreno",bloco:"D · Regras gerais",termo:"Terreno Fácil e Difícil",aliases:"Terreno difícil; água; crateras",texto:'Fácil (plano, livre): 1 Ponto de Movimento = 1". Difícil (água, pântano, crateras, encostas): 2 pontos = 1". Unidades com Hovering ignoram terreno difícil.',ref:"5.1",formato:"texto"},
+{id:"terreno",bloco:"D · Regras gerais",termo:"Terreno Fácil e Difícil",aliases:"Terreno difícil; água; crateras",texto:"Fácil (plano, livre): 1 Ponto de Movimento = 1\". Difícil (água, pântano, crateras, encostas): 2 pontos = 1\". Unidades com Hovering ignoram terreno difícil.",ref:"5.1",formato:"texto"},
 {id:"espacos-ocupados",bloco:"D · Regras gerais",termo:"Espaços Ocupados",aliases:"",texto:"Não é possível atravessar nem parar no mesmo lugar de outro Hulk.",ref:"5.2",formato:"texto"},
-{id:"investida",bloco:"D · Regras gerais",termo:"Investida",aliases:"Ramming",texto:'Usa a ação de movimento: declare no início e mova pelo menos 4" em linha reta até o alvo. Dados: Ataque Corpo a Corpo +1d6, cinético. Acertos: 4–5 = 1 de dano, 6 = 2. Quem investe não sofre dano.',ref:"5.3",formato:"texto"},
+{id:"investida",bloco:"D · Regras gerais",termo:"Investida",aliases:"Ramming",texto:"Usa a ação de movimento: declare no início e mova pelo menos 4\" em linha reta até o alvo. Dados: Ataque Corpo a Corpo +1d6, cinético. Acertos: 4–5 = 1 de dano, 6 = 2. Quem investe não sofre dano.",ref:"5.3",formato:"texto"},
 {id:"realizando-ataque",bloco:"D · Regras gerais",termo:"Realizando um Ataque",aliases:"Rolagem de ataque; acertos",texto:"Ataque: role os dados (com modificadores). 4, 5 e 6 acertam.\nDefesa: cada 5 ou 6 cancela um acerto, começando pelos 4.\nDano: os acertos restantes causam dano conforme a arma.",ref:"6.8",formato:"etapas"},
 {id:"arcos-de-tiro",bloco:"D · Regras gerais",termo:"Arcos de Tiro",aliases:"Arco frontal; arco traseiro; costas",texto:"Só é possível atacar alvos no seu arco frontal. A linha entre os dois pontos laterais da base hexagonal separa frente e trás. Atacar pelo arco traseiro do alvo dá +1d6, inclusive no corpo a corpo.",ref:"6.3",formato:"texto"},
 {id:"linha-de-visada",bloco:"D · Regras gerais",termo:"Linha de Visada",aliases:"Visada",texto:"O atacante precisa ver alguma parte do alvo. Exceções: Míssil (basta um observador amigo) e AHM (a visada é até o ponto de detonação).",ref:"6.5, 7.1, 7.5",formato:"texto"},
 {id:"cobertura",bloco:"D · Regras gerais",termo:"Cobertura",aliases:"Cobertura parcial",texto:"Alvo pelo menos 50% oculto (edifício, árvore, outro Hulk) tem cobertura parcial: +1d6 na Defesa contra ataques à distância. A cobertura não impede o alvo de atacar.",ref:"6.6, 6.7",formato:"texto"},
 {id:"modificadores",bloco:"D · Regras gerais",termo:"Modificadores de Combate",aliases:"Elevação",texto:"Só em ataques à distância. Defesa: +1d6 se estiver mais alto que o atacante e +1d6 em cobertura parcial. Ataque: +1d6 se estiver mais alto que o alvo.",ref:"6.7",formato:"texto"},
-{id:"repulsao",bloco:"D · Regras gerais",termo:"Repulsão",aliases:"Knockback",texto:'Em ataques cinéticos, declare antes de rolar: cada 6 causa só 1 de dano e empurra o alvo 1" para longe do atacante, no lugar do efeito normal do 6. Vale para todos os dados do ataque.',ref:"6.10",formato:"texto"},
-{id:"destruicao-hulk",bloco:"D · Regras gerais",termo:"Destruição do Hulk",aliases:"Explosão de combustível",texto:'Em 0 de Estrutura, o Hulk é destruído e o combustível restante explode: role metade dele em d6 (arredondando para cima) contra todas as unidades a até 3". Cada 4–6 causa 1 de dano. Os alvos rolam Defesa normalmente.',ref:"6.9",formato:"texto"},
-{id:"dano-de-queda",bloco:"D · Regras gerais",termo:"Dano de Queda",aliases:"Queda",texto:'Queda de até 1" é segura. Acima disso, o Hulk sofre 1 de dano na Estrutura por polegada (ou fração) além da primeira e fica prostrado. Mais de 5": destruído. Se cair sobre outra unidade, ela sofre dano cinético pela classe de quem caiu (Leve 1d6, Médio 2d6, Pesado 3d6) e rola Defesa.',ref:"6.11",formato:"texto"},
+{id:"repulsao",bloco:"D · Regras gerais",termo:"Repulsão",aliases:"Knockback",texto:"Em ataques cinéticos, declare antes de rolar: cada 6 causa só 1 de dano e empurra o alvo 1\" para longe do atacante, no lugar do efeito normal do 6. Vale para todos os dados do ataque.",ref:"6.10",formato:"texto"},
+{id:"destruicao-hulk",bloco:"D · Regras gerais",termo:"Destruição do Hulk",aliases:"Explosão de combustível",texto:"Em 0 de Estrutura, o Hulk é destruído e o combustível restante explode: role metade dele em d6 (arredondando para cima) contra todas as unidades a até 3\". Cada 4–6 causa 1 de dano. Os alvos rolam Defesa normalmente.",ref:"6.9",formato:"texto"},
+{id:"dano-de-queda",bloco:"D · Regras gerais",termo:"Dano de Queda",aliases:"Queda",texto:"Queda de até 1\" é segura. Acima disso, o Hulk sofre 1 de dano na Estrutura por polegada (ou fração) além da primeira e fica prostrado. Mais de 5\": destruído. Se cair sobre outra unidade, ela sofre dano cinético pela classe de quem caiu (Leve 1d6, Médio 2d6, Pesado 3d6) e rola Defesa.",ref:"6.11",formato:"texto"},
 {id:"prostrado",bloco:"D · Regras gerais",termo:"Prostrado",aliases:"Caído",texto:"Não rola Defesa. Fica prostrado no resto do turno da queda e no turno seguinte inteiro, e levanta sozinho no fim dele.",ref:"6.11",formato:"texto"},
 {id:"desligado",bloco:"D · Regras gerais",termo:"Desligado",aliases:"Desligamento; shutdown",texto:"Não rola Defesa. Acontece com 10 ou 11 na Tabela de Calor (1 ou 2 turnos) ou ao chegar ao dobro do Calor Máximo (2 turnos). O calor zera na hora.",ref:"9.2, 9.3",formato:"texto"},
 {id:"pontos-de-calor",bloco:"D · Regras gerais",termo:"Pontos de Calor",aliases:"Calor",texto:"Ganha calor: Ação Forçada, Salto Longo e Ataque com Salto (+1 cada), Canhão Rotativo (conforme a ficha) e ao ser atingido por um 6 de Laser ou de Plasma a meio alcance. Perde calor: Ventilação Parcial (−1), Ventilação Total (zera) e terminar o turno parado na água (pode reduzir 1).",ref:"4.1–4.4, 7.4, 7.6, 7.8, 9.1",formato:"texto"},
 {id:"verificacao-calor",bloco:"D · Regras gerais",termo:"Verificação de Calor",aliases:"",texto:"No fim do turno, cada Hulk no Calor Máximo ou acima rola 2d6 na Tabela de Calor, +1 por ponto acima do máximo. Antes disso, quem está parado na água pode reduzir o calor em 1.",ref:"9.1, 9.2",formato:"texto"},
 {id:"tabela-calor",bloco:"D · Regras gerais",termo:"Tabela de Calor",aliases:"2d6 de calor",texto:"2–6 · Sem efeito\n7 · Metade do Movimento no próximo turno\n8 · Sem movimento no próximo turno (sem Ação Forçada)\n9 · Sem ataques com armas no próximo turno; corpo a corpo e Investida liberados (sem Ação Forçada)\n10 · Desliga por 1 turno\n11 · Desliga por 2 turnos\n12 · Explosão de munição: 1d6 direto na Estrutura, sem Defesa (1–3 = 1 de dano, 4–6 = 2)\n13+ · Como o 12, +1 de dano por ponto acima",ref:"9.3",formato:"tabela"},
-{id:"posicionamento",bloco:"D · Regras gerais",termo:"Posicionamento",aliases:"Implantação; deploy",texto:'As unidades começam a até 6" da sua borda. Cada lado rola 1d6: quem tirar menos posiciona primeiro a sua unidade mais cara, e os lados se alternam, das mais caras para as mais baratas.',ref:"11.0",formato:"texto"},
+{id:"posicionamento",bloco:"D · Regras gerais",termo:"Posicionamento",aliases:"Implantação; deploy",texto:"As unidades começam a até 6\" da sua borda. Cada lado rola 1d6: quem tirar menos posiciona primeiro a sua unidade mais cara, e os lados se alternam, das mais caras para as mais baratas.",ref:"11.0",formato:"texto"},
 {id:"vitoria",bloco:"D · Regras gerais",termo:"Vitória",aliases:"",texto:"Vence quem eliminar todas as forças inimigas ou, ao fim de um tempo combinado, quem somar mais pontos em unidades inimigas destruídas. Cenários podem ter objetivos próprios.",ref:"3.5",formato:"texto"},
 ];
 // Campo da ficha -> id do lembrete
@@ -364,8 +477,6 @@ function renderUnits(filter){
     const det = document.createElement('details');
     det.className = 'card';
     const ws = weaponsFor(u.n);
-    const special = u.special ? (/hovering/i.test(u.special)
-      ? esc(u.special).replace(/hovering/i, m => termBtn(CAMPOS.hovering, m, 'info')) : esc(u.special)) : "";
     det.innerHTML = `
       <summary>
         <div><div class="u-name">${esc(u.n)}</div><div class="u-sub">${esc(u.tipo)} · ${termBtn(CAMPOS.classe, esc(u.classe))} · ${esc(u.ficha)}</div></div>
@@ -382,10 +493,11 @@ function renderUnits(filter){
         <span>${termBtn(CAMPOS.arm, 'Blindagem Máx.:')} ${u.arm}</span>
         <span>${termBtn(CAMPOS.str, 'Estrutura Máx.:')} ${u.str}</span>
       </div>
-      ${special ? `<div class="special">${special}</div>` : ""}
+      ${specialHtml(u)}
       <div class="wlist">
         ${ws.map(weaponHtml).join("")}
-      </div>`;
+      </div>
+      <button type="button" class="print-one" data-print="${esc(u.n)}">🖨️ Imprimir ficha</button>`;
     list.appendChild(det);
   });
 }
@@ -441,6 +553,7 @@ function renderForceList(){
   const remainSpan = document.getElementById('remainSpan');
   remainSpan.textContent = remain >= 0 ? `Restam ${remain} pts` : `Excedeu em ${-remain} pts`;
   remainSpan.className = remain >= 0 ? 'ok' : 'over';
+  syncBattle();
   wrap.querySelectorAll('.rmBtn').forEach(b=>{
     b.addEventListener('click', ()=>{
       force.splice(parseInt(b.dataset.idx,10),1);
@@ -454,19 +567,343 @@ function populateUnitSelect(){
   sel.innerHTML = UNITS.map(u=>`<option value="${u.n}">${u.n} (${u.pts} pts)</option>`).join("");
 }
 
-function exportText(){
-  const u_lines = force.map(line=>{
+// Texto da lista, usado em "Exportar como texto" e "Compartilhar".
+function listText(){
+  const lines = force.filter(l=>unitByName(l.name));
+  const u_lines = lines.map(line=>{
     const u = unitByName(line.name);
     return `${line.qty}x ${u.n} — ${u.pts*line.qty} pts`;
   });
-  const total = force.reduce((s,l)=> s + unitByName(l.name).pts * l.qty, 0);
-  const txt = `BATTLE HULKS — Lista de Combate\nLimite: ${limit} pts | Total: ${total} pts | Restam: ${limit-total} pts\n\n` + u_lines.join("\n");
+  const total = lines.reduce((s,l)=> s + unitByName(l.name).pts * l.qty, 0);
+  return `C3 HULKS (Battle Hulks) — Lista de Combate\nLimite: ${limit} pts | Total: ${total} pts | Restam: ${limit-total} pts\n\n` + u_lines.join("\n");
+}
+
+function exportText(){
+  const txt = listText();
   const area = document.getElementById('exportArea');
   area.style.display = 'block';
   area.value = txt;
   area.focus(); area.select();
   try{ document.execCommand('copy'); }catch(e){}
 }
+
+// ---- Aviso curto (toast) ----
+let toastTimer = null;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ---- Compartilhar a lista ----
+async function copyText(text){
+  try{
+    if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); return true; }
+  }catch(e){}
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){}
+  ta.remove();
+  return ok;
+}
+async function shareList(){
+  if(!force.some(l=>unitByName(l.name))){ toast('A lista está vazia'); return; }
+  const text = listText();
+  if(navigator.share){
+    try{ await navigator.share({title:'C3 Hulks — Lista de Combate', text}); return; }
+    catch(e){ if(e && e.name === 'AbortError') return; } // cancelado pelo usuário
+  }
+  if(await copyText(text)) toast('Lista copiada');
+  else exportText();
+}
+
+// ---- Batalha (rastreador de partida) ----
+const BAT_KEY = 'battlehulks_batalha_v1';
+const COR_NOMES = ['Verde', 'Amarelo', 'Vermelho'];
+let bat = {};          // chave da instância ("Nome#n") -> {arm, str, usos:{índice da arma: restante}}
+let batOpen = null;    // instância aberta na tela de detalhe
+let batListScroll = 0; // posição da lista ao abrir o detalhe
+
+function loadBattle(){
+  try{
+    const v = JSON.parse(window.localStorage.getItem(BAT_KEY) || '{}');
+    bat = (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+  }catch(e){ bat = {}; }
+}
+function saveBattle(){
+  try{ window.localStorage.setItem(BAT_KEY, JSON.stringify(bat)); }catch(e){}
+}
+
+// Cor da Estrutura com s pontos restantes (0 Verde, 1 Amarelo, 2 Vermelho).
+// Os limites vêm da planilha, por unidade; nunca calcular por proporção.
+function strColor(u, s){ return s >= u.str_verde ? 0 : s >= u.str_amarelo ? 1 : 2; }
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+// Uma instância por cópia da Lista: "2x Chimera Mk.I" vira "#1" e "#2". Quantidade 1 não leva número.
+function battleInstances(){
+  const out = [];
+  force.forEach(line=>{
+    const u = unitByName(line.name);
+    if(!u) return;
+    for(let i = 1; i <= line.qty; i++)
+      out.push({key: u.n + '#' + i, u, label: line.qty > 1 ? `${u.n} #${i}` : u.n});
+  });
+  return out;
+}
+
+function freshBattleState(u){
+  const usos = {};
+  weaponsFor(u.n).forEach((w, i)=>{ if(w.usos) usos[i] = w.usos; });
+  return {arm:u.arm, str:u.str, usos};
+}
+
+// Mantém o estado das instâncias que continuam na lista, cria as novas e descarta as removidas.
+function syncBattle(){
+  const insts = battleInstances(), next = {};
+  insts.forEach(({key, u})=>{
+    const s = bat[key], f = freshBattleState(u);
+    if(s && typeof s === 'object'){
+      const num = (v, max) => Number.isFinite(v) ? clamp(Math.round(v), 0, max) : max;
+      f.arm = num(s.arm, u.arm);
+      f.str = num(s.str, u.str);
+      Object.keys(f.usos).forEach(i=>{ f.usos[i] = num(s.usos && s.usos[i], f.usos[i]); });
+    }
+    next[key] = f;
+  });
+  bat = next;
+  saveBattle();
+  return insts;
+}
+
+function specialHtml(u){
+  if(!u.special) return "";
+  const t = /hovering/i.test(u.special)
+    ? esc(u.special).replace(/hovering/i, m => termBtn(CAMPOS.hovering, m, 'info')) : esc(u.special);
+  return `<div class="special">${t}</div>`;
+}
+
+function renderBattle(){
+  // Guarda o foco para devolvê-lo ao mesmo botão depois de redesenhar.
+  const f = document.activeElement;
+  const sel = f && f.closest && f.closest('#viewBatalha')
+    ? ['trk','v','step','uso','d','inst'].filter(k=>f.dataset[k] !== undefined)
+        .map(k=>`[data-${k}="${CSS.escape(f.dataset[k])}"]`).join('') : '';
+  const insts = syncBattle();
+  const inst = batOpen ? insts.find(i=>i.key === batOpen) : null;
+  if(!inst) batOpen = null;
+  document.getElementById('batList').style.display = inst ? 'none' : '';
+  document.getElementById('batDetail').style.display = inst ? '' : 'none';
+  if(inst) renderBattleDetail(inst); else renderBattleList(insts);
+  if(sel){
+    const n = document.querySelector('#viewBatalha ' + sel);
+    if(n && !n.disabled) n.focus({preventScroll:true});
+  }
+}
+
+function renderBattleList(insts){
+  const el = document.getElementById('batList');
+  if(!insts.length){
+    el.innerHTML = `<div class="empty">Sua Lista de Combate está vazia.<br>Monte a força na aba Lista e volte aqui para acompanhar a partida.</div>
+      <button type="button" class="btn primary wide" data-go="lista">Ir para a Lista</button>`;
+    return;
+  }
+  const ativas = insts.filter(i=>bat[i.key].str > 0).length;
+  el.innerHTML = `<div class="bat-top"><span class="bat-count">${ativas} de ${insts.length} em combate</span>
+      <button type="button" class="btn" data-act="nova">Nova Batalha</button></div>` +
+    insts.map(({key, u, label})=>{
+      const s = bat[key], dead = s.str <= 0, c = strColor(u, s.str);
+      return `<button type="button" class="bcard${dead ? ' dead' : ''}" data-inst="${esc(key)}">
+        <span class="bar c-bg${c}"></span>
+        <span class="bbody"><span class="bname">${esc(label)}</span>
+          <span class="bstats"><span>Blindagem <b>${s.arm}/${u.arm}</b></span><span>Estrutura <b>${s.str}/${u.str}</b></span></span></span>
+        <span class="bstate">${dead ? 'Destruída' : `<span class="dot c-bg${c}"></span>${COR_NOMES[c]}`}</span>
+        <span class="chev" aria-hidden="true">›</span></button>`;
+    }).join('');
+}
+
+// Três valores (Verde / Amarelo / Vermelho) com o da cor atual em destaque.
+function battleValsHtml(vals, c){
+  return `<span class="v3">${vals.map((v, i)=>`<span class="c${i}${i === c ? ' cur' : ''}">${esc(v)}</span>`).join('')}</span>`;
+}
+// "3 / 3 / 2" vira três colunas; textos como o do AHM ("3/2 (Solo/Ar) ...") ficam como estão.
+function dmgCols(w){
+  if(w.cat === 'Melhoria') return null;
+  const p = String(w.dmg).split(/\s+\/\s+/);
+  return p.length === 3 ? p : null;
+}
+function battleAttHtml(key, label, vals, c){
+  const id = CAMPOS[key];
+  const inner = `<div class="lbl">${label}</div>${battleValsHtml(vals, c)}`;
+  return RULE_BY_ID[id] ? `<button type="button" class="stat term" data-rule="${id}">${inner}</button>` : `<div class="stat">${inner}</div>`;
+}
+
+// Trilha 0..máximo. O número tocado é o valor que sobrou; os de cima ficam riscados.
+function trackHtml(kind, u, s){
+  const max = u[kind], val = s[kind], nome = kind === 'arm' ? 'Blindagem' : 'Estrutura';
+  const n = max + 1, cols = n <= 7 ? n : Math.ceil(n / 2); // trilhas longas quebram em duas linhas
+  let cells = '';
+  for(let v = 0; v <= max; v++){
+    const cls = 'cell' + (kind === 'str' ? ' s' + strColor(u, v) : '') + (v > val ? ' x' : '') + (v === val ? ' cur' : '');
+    cells += `<button type="button" class="${cls}" data-trk="${kind}" data-v="${v}" aria-label="${nome} ${v}${v > val ? ', riscado' : ''}" aria-pressed="${v === val}">${v}</button>`;
+  }
+  return `<div class="track">
+    <div class="track-head"><span class="tname">${termBtn(CAMPOS[kind], nome)}</span>
+      <span class="tval">${val}/${max}</span>
+      <button type="button" class="step" data-step="${kind}" data-d="-1" aria-label="${nome} menos 1"${val <= 0 ? ' disabled' : ''}>−1</button>
+      <button type="button" class="step" data-step="${kind}" data-d="1" aria-label="${nome} mais 1"${val >= max ? ' disabled' : ''}>+1</button>
+    </div>
+    <div class="cells" style="--cols:${cols}">${cells}</div>
+  </div>`;
+}
+
+function battleWeaponHtml(w, i, s, c){
+  const ids = (w.lembretes||[]).filter(id=>RULE_BY_ID[id]);
+  // Blindagens especiais não são rastreadas: ficam com tokens na mesa.
+  if(w.cat === 'Melhoria'){
+    return `<div class="witem">${termBtn(ids[0], `${esc(w.n)} ${esc(w.dmg)}`, 'upg')}<span class="upg-note">· controle com tokens na mesa</span></div>`;
+  }
+  const chips = ids.map(id=>`<button type="button" class="term" data-rule="${id}">${esc(RULE_BY_ID[id].termo)}</button>`).join("");
+  const cols = dmgCols(w);
+  let uses = '';
+  if(w.usos){
+    const r = s.usos[i];
+    uses = `<div class="uses"><span>Usos:</span><b class="${r === 0 ? 'zero' : ''}">${r}/${w.usos}</b>
+      <button type="button" class="step" data-uso="${i}" data-d="-1" aria-label="Gastar 1 de ${esc(w.n)}"${r <= 0 ? ' disabled' : ''}>−</button>
+      <button type="button" class="step" data-uso="${i}" data-d="1" aria-label="Devolver 1 de ${esc(w.n)}"${r >= w.usos ? ' disabled' : ''}>+</button></div>`;
+  }
+  return `<div class="witem"><div class="wname">${esc(w.n)} <span style="color:var(--ink-dim); font-weight:400">(${esc(w.en)})</span></div>
+    <div class="wmeta">${esc(w.tipo)} · Alcance ${esc(w.range)}${w.obs ? ' · ' + esc(w.obs) : ''}</div>
+    <div class="wdmg">Dados de Ataque ${cols ? battleValsHtml(cols, c) : '<b>' + esc(w.dmg) + '</b>'}</div>
+    ${uses}
+    ${chips ? `<div class="chips">${chips}</div>` : ''}</div>`;
+}
+
+function renderBattleDetail({key, u, label}){
+  const s = bat[key], c = strColor(u, s.str), dead = s.str <= 0;
+  document.getElementById('batDetail').innerHTML = `
+    <button type="button" class="back" data-act="voltar">‹ Batalha</button>
+    <div class="card bd${dead ? ' dead' : ''}">
+      <div class="bd-title">${esc(label)}</div>
+      <div class="u-sub">${esc(u.tipo)} · ${termBtn(CAMPOS.classe, esc(u.classe))} · ${u.pts} pts</div>
+      <div class="state-row">${dead
+        ? '<span class="state-pill dead">Destruída</span><span class="state-hint">Toque num número da Estrutura para desfazer.</span>'
+        : `${termBtn(CAMPOS.cores, COR_NOMES[c], 'state-pill c-bg' + c)}<span class="state-hint">Valores em destaque seguem a cor atual da Estrutura.</span>`}</div>
+      <div class="stat-grid">
+        ${battleAttHtml('def', 'Defesa', u.def, c)}
+        ${battleAttHtml('atk', 'Corpo a Corpo', u.atk, c)}
+        ${battleAttHtml('mov', 'Movimento', u.mov, c)}
+      </div>
+      ${trackHtml('arm', u, s)}
+      ${trackHtml('str', u, s)}
+      <div class="misc">
+        <span>${termBtn(CAMPOS.fuel, 'Combustível:')} ${u.fuel}</span>
+        <span>${termBtn(CAMPOS.heat, 'Calor Máx.:')} ${u.heat}</span>
+      </div>
+      ${specialHtml(u)}
+      <div class="wlist">${weaponsFor(u.n).map((w, i)=>battleWeaponHtml(w, i, s, c)).join('')}</div>
+    </div>`;
+}
+
+// Detalhe usa o histórico do navegador, para o Voltar do Android voltar à lista.
+function openBattleDetail(key){
+  if(!bat[key]) return;
+  batListScroll = window.scrollY;
+  batOpen = key;
+  try{ history.pushState({bat:key}, ''); }catch(e){}
+  renderBattle();
+  window.scrollTo(0, 0);
+}
+function closeBattleDetail(){
+  if(history.state && history.state.bat) history.back(); // o popstate fecha o detalhe
+  else leaveBattleDetail();
+}
+function leaveBattleDetail(){
+  const k = batOpen;
+  batOpen = null;
+  renderBattle();
+  window.scrollTo(0, batListScroll);
+  const card = [...document.querySelectorAll('#batList [data-inst]')].find(b=>b.dataset.inst === k);
+  if(card) card.focus({preventScroll:true});
+}
+window.addEventListener('popstate', e=>{
+  closeRule();
+  const k = e.state && e.state.bat;
+  if(k && currentTab === 'batalha' && bat[k]){ batOpen = k; renderBattle(); window.scrollTo(0, 0); }
+  else if(batOpen) leaveBattleDetail();
+});
+
+function newBattle(){
+  if(!confirm('Começar uma Nova Batalha?\n\nO dano e os usos de armas de todas as unidades voltam ao máximo. A Lista de Combate não muda.')) return;
+  battleInstances().forEach(({key, u})=>{ bat[key] = freshBattleState(u); });
+  saveBattle();
+  renderBattle();
+  toast('Nova batalha pronta');
+}
+
+document.getElementById('viewBatalha').addEventListener('click', e=>{
+  const t = e.target.closest('[data-inst],[data-trk],[data-step],[data-uso],[data-act],[data-go]');
+  if(!t || t.disabled) return;
+  const d = t.dataset;
+  if(d.inst){ openBattleDetail(d.inst); return; }
+  if(d.go){ showTab(d.go); return; }
+  if(d.act === 'nova'){ newBattle(); return; }
+  if(d.act === 'voltar'){ closeBattleDetail(); return; }
+  const inst = battleInstances().find(i=>i.key === batOpen);
+  if(!inst) return;
+  const s = bat[inst.key], u = inst.u;
+  if(d.trk) s[d.trk] = clamp(parseInt(d.v, 10), 0, u[d.trk]);
+  else if(d.step) s[d.step] = clamp(s[d.step] + parseInt(d.d, 10), 0, u[d.step]);
+  else if(d.uso){
+    const w = weaponsFor(u.n)[+d.uso];
+    if(w && w.usos) s.usos[d.uso] = clamp(s.usos[d.uso] + parseInt(d.d, 10), 0, w.usos);
+  }
+  saveBattle();
+  renderBattle();
+});
+
+// ---- Imprimir / Salvar como PDF ----
+function printSheetHtml({u, label}){
+  const row = (lbl, v) => `<tr><th>${lbl}</th><td class="pc0">${v[0]}</td><td class="pc1">${v[1]}</td><td class="pc2">${v[2]}</td></tr>`;
+  const track = (nome, max, color) => {
+    let c = '';
+    for(let v = 0; v <= max; v++) c += `<span class="pcell${color ? ' ps' + color(v) : ''}">${v}</span>`;
+    return `<div class="ptrack"><span class="ptl">${nome}</span><span class="pcells">${c}</span></div>`;
+  };
+  const weapons = weaponsFor(u.n).map(w=>{
+    const boxes = w.usos ? `<div class="pboxes">Usos: ${'<span class="pbox"></span>'.repeat(w.usos)}</div>` : '';
+    return `<tr><td><b>${esc(w.n)}</b><br><span class="pen">${esc(w.en)}</span></td>
+      <td>${w.cat === 'Melhoria' ? 'Melhoria · ' : ''}${esc(w.tipo)}</td><td>${esc(w.range)}</td>
+      <td>${esc(w.dmg)}</td><td>${w.obs ? esc(w.obs) : ''}${boxes}</td></tr>`;
+  }).join('');
+  return `<section class="pu">
+    <div class="ph">C3 Hulks · Battle Hulks PT-BR</div>
+    <div class="ptitle"><span>${esc(label)}</span><span>${u.pts} pts</span></div>
+    <div class="psub">${esc(u.tipo)} · ${esc(u.classe)} · ${esc(u.ficha)}</div>
+    <div class="pgrid">
+      <table class="patt"><thead><tr><th></th><th class="pc0">Verde</th><th class="pc1">Amarelo</th><th class="pc2">Vermelho</th></tr></thead>
+        <tbody>${row('Defesa', u.def)}${row('Corpo a Corpo', u.atk)}${row('Movimento', u.mov)}</tbody></table>
+      <div class="pmisc">Combustível: <b>${u.fuel}</b><br>Calor Máx.: <b>${u.heat}</b><br>Blindagem Máx.: <b>${u.arm}</b><br>Estrutura Máx.: <b>${u.str}</b></div>
+    </div>
+    ${u.special ? `<div class="pspecial">${esc(u.special)}</div>` : ''}
+    <table class="pweap"><thead><tr><th>Arma</th><th>Tipo</th><th>Alcance</th><th>Dados de Ataque</th><th>Observações</th></tr></thead><tbody>${weapons}</tbody></table>
+    ${track('Blindagem', u.arm)}
+    ${track('Estrutura', u.str, v => strColor(u, v))}
+    <div class="pcred">Battle Hulks © Fat Dragon Games, usado com permissão. Tradução e app: Felipe (fozzimus).</div>
+  </section>`;
+}
+function printUnits(items){
+  closeRule();
+  document.getElementById('printArea').innerHTML = items.map(printSheetHtml).join('');
+  document.body.classList.add('printing');
+  try{ window.print(); }catch(e){ toast('Não foi possível abrir a impressão'); }
+}
+// A área preparada vale até o próximo toque no app (no Android, print() pode voltar antes da prévia ficar pronta).
+['pointerdown', 'keydown'].forEach(ev=>window.addEventListener(ev, ()=>document.body.classList.remove('printing'), true));
 
 // ---- Painel de lembrete (bottom sheet) ----
 const sheet = document.getElementById('sheet');
@@ -582,17 +1019,38 @@ function renderRules(q){
 }
 
 // ---- Tabs ----
+let currentTab = 'fichas';
 function showTab(tab){
   closeRule();
-  [['fichas','Fichas'],['lista','Lista'],['regras','Regras']].forEach(([t,N])=>{
+  // Saindo da Batalha com o detalhe aberto: desfaz a entrada do histórico criada ao abrir.
+  if(tab !== 'batalha' && batOpen){
+    batOpen = null;
+    if(history.state && history.state.bat) history.back();
+  }
+  currentTab = tab;
+  [['fichas','Fichas'],['lista','Lista'],['batalha','Batalha'],['regras','Regras']].forEach(([t,N])=>{
     document.getElementById('view'+N).style.display = tab===t ? '' : 'none';
     document.getElementById('tab'+N).classList.toggle('active', tab===t);
   });
+  if(tab === 'batalha') renderBattle();
 }
 
 document.getElementById('tabFichas').addEventListener('click', ()=>showTab('fichas'));
 document.getElementById('tabLista').addEventListener('click', ()=>showTab('lista'));
+document.getElementById('tabBatalha').addEventListener('click', ()=>showTab('batalha'));
 document.getElementById('tabRegras').addEventListener('click', ()=>showTab('regras'));
+document.getElementById('shareBtn').addEventListener('click', shareList);
+document.getElementById('printListBtn').addEventListener('click', ()=>{
+  const insts = battleInstances();
+  if(!insts.length){ toast('A lista está vazia'); return; }
+  printUnits(insts);
+});
+document.getElementById('unitList').addEventListener('click', e=>{
+  const b = e.target.closest('[data-print]');
+  if(!b) return;
+  const u = unitByName(b.dataset.print);
+  if(u) printUnits([{u, label:u.n}]);
+});
 document.getElementById('rulesSearch').addEventListener('input', e=>renderRules(e.target.value));
 document.getElementById('searchBox').addEventListener('input', e=>renderUnits(e.target.value));
 document.getElementById('addBtn').addEventListener('click', ()=>{
@@ -614,11 +1072,17 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
 });
 
 loadState();
+loadBattle();
 document.getElementById('limitInput').value = limit;
 renderUnits('');
 renderRules('');
 populateUnitSelect();
 renderForceList();
+// Página recarregada no detalhe da Batalha (ex.: Android fechou o app em segundo plano): volta para ele.
+if(history.state && history.state.bat){
+  if(bat[history.state.bat]){ showTab('batalha'); batOpen = history.state.bat; renderBattle(); }
+  else history.replaceState(null, '');
+}
 </script>
 <script>
 if ('serviceWorker' in navigator) {
